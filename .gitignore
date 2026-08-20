@@ -1,0 +1,65 @@
+# Python
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+.venv/
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Python tooling
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# VASP
+WAVECAR
+CHGCAR
+CHG
+AECCAR*
+PROCAR
+vasprun.xml
+OUTCAR
+DOSCAR
+EIGENVAL
+XDATCAR
+IBZKPT
+REPORT
+OSZICAR
+vaspout.h5
+
+# CP2K / MD
+*.restart
+*.restart.bak
+*.wfn
+*.wfn.bak
+*.cube
+*.dcd
+*.lammpstrj
+*.traj
+
+# Large ML files
+*.pt
+*.pth
+*.ckpt
+*.model
+*.npz
+
+# Large archives
+*.zip
+*.tar
+*.tar.gz
+
+# HPC
+scratch/
+tmp/
+slurm-*.out
+*.e*
+*.o*
