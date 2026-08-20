@@ -7,8 +7,8 @@
 - [x] Record provenance
 - [x] Identify Ga/Zn mixed occupancy
 - [x] Establish ordering strategy
-- [ ] Generate four symmetry-distinct ordered models
-- [ ] Validate generated structures
+- [x] Generate four symmetry-distinct ordered models
+- [x] Validate generated structures
 - [ ] Establish CP2K convergence parameters
 - [ ] Relax ordered structures
 - [ ] Compare relative energies

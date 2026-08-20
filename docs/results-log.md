@@ -89,6 +89,46 @@ energetics.
 
 ---
 
+## Ordered Crystalline Structure Validation
+
+**Status:** Completed.
+
+Four symmetry-distinct ordered InGaZnO4 structures were generated from
+the mixed Ga/Zn crystallographic model derived from COD 1521670.
+
+### Validation results
+
+| Model | Atoms | Composition | Ordered | Minimum distance (Å) | Space group |
+|---|---:|---|---|---:|---|
+| `igzo_crystal_ordered_001` | 21 | In3Ga3Zn3O12 | Yes | 1.930 | P3m1 (156) |
+| `igzo_crystal_ordered_002` | 21 | In3Ga3Zn3O12 | Yes | 1.930 | P3m1 (156) |
+| `igzo_crystal_ordered_003` | 21 | In3Ga3Zn3O12 | Yes | 1.930 | R3m (160) |
+| `igzo_crystal_ordered_004` | 21 | In3Ga3Zn3O12 | Yes | 1.930 | P3m1 (156) |
+
+Validation confirmed:
+
+- correct 21-atom conventional-cell composition
+- 3 In, 3 Ga, 3 Zn and 12 O atoms
+- complete site occupancies
+- consistent lattice parameters
+- no unphysical short contacts
+- four structurally distinct ordered configurations
+
+pymatgen reported that fractional coordinates were rounded to ideal
+crystallographic values during CIF parsing to avoid finite-precision
+issues. No structural validation failures resulted from this operation.
+
+### Symmetry observation
+
+Three ordered configurations have P3m1 symmetry, while
+`igzo_crystal_ordered_003` retains R3m symmetry.
+
+The higher symmetry of model 003 does not imply that it is energetically
+preferred. All four models will be compared using first-principles
+geometry optimisation and relative energies.
+
+No final crystalline computational reference has yet been selected.
+
 ## Current Computational Status
 
 - [x] Experimental CIF obtained
@@ -96,8 +136,8 @@ energetics.
 - [x] Mixed Ga/Zn site identified
 - [x] Ordering problem defined
 - [x] Four symmetry-distinct configuration classes identified
-- [ ] Ordered structure files generated
-- [ ] Structures independently validated
+- [x] Ordered structure files generated
+- [x] Structures independently validated
 - [ ] CP2K convergence completed
 - [ ] Ordered structures relaxed
 - [ ] Relative energies calculated
