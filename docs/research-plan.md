@@ -1,4 +1,3 @@
-
 ---
 
 # 3. `docs/research-plan.md`
