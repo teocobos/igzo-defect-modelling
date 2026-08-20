@@ -1,197 +1,153 @@
-# IGZO Defect Modelling — Project Roadmap
+# Project Roadmap
 
-## Project Objective
+## Milestone 1 — Crystalline Reference
 
-Develop a reproducible computational framework for investigating
-structural disorder, oxygen vacancies and electronic properties in
-indium gallium zinc oxide (IGZO).
+- [x] Identify experimental InGaZnO4 structure
+- [x] Obtain COD reference CIF
+- [x] Record provenance
+- [x] Identify Ga/Zn mixed occupancy
+- [x] Establish ordering strategy
+- [ ] Generate four symmetry-distinct ordered models
+- [ ] Validate generated structures
+- [ ] Establish CP2K convergence parameters
+- [ ] Relax ordered structures
+- [ ] Compare relative energies
+- [ ] Select crystalline reference model
 
-The project progresses from first-principles calculations to
-machine-learning-assisted large-scale sampling.
+Primary output:
 
----
-
-# Milestone 1 — Computational Foundation
-
-- [ ] Repository established
-- [ ] Project scope defined
-- [ ] Naming conventions established
-- [ ] Metadata schema established
-- [ ] Crystalline IGZO structure selected
-- [ ] VASP computational parameters converged
-- [ ] Pristine crystalline IGZO relaxed
-- [ ] Pristine electronic structure calculated
-- [ ] Electronic structure validated against literature
-
-**Primary output:**
-
-Validated crystalline IGZO computational model.
+**Validated crystalline InGaZnO4 computational reference**
 
 ---
 
-# Milestone 2 — Oxygen Vacancy Physics
+## Milestone 2 — Crystalline Electronic Structure
 
-- [ ] Oxygen-vacancy generation workflow established
-- [ ] Inequivalent oxygen sites identified
-- [ ] Vacancy structures generated
-- [ ] Vacancy structures relaxed
-- [ ] Vacancy formation energies calculated
-- [ ] Defect electronic states analysed
-- [ ] Relevant charge states investigated
+- [ ] Relax selected reference
+- [ ] Calculate DOS
+- [ ] Calculate PDOS
+- [ ] Calculate band structure where appropriate
+- [ ] Identify band-edge orbital character
+- [ ] Compare with literature
+- [ ] Cross-check using VASP when available
 
-**Primary output:**
+Primary output:
 
-Initial first-principles description of oxygen vacancies in crystalline
-IGZO.
-
----
-
-# Milestone 3 — Amorphous IGZO
-
-- [ ] CP2K amorphisation workflow established
-- [ ] Melt/quench protocol validated
-- [ ] Multiple independent amorphous structures generated
-- [ ] Density analysed
-- [ ] RDFs calculated
-- [ ] Coordination statistics calculated
-- [ ] Bond-angle distributions calculated
-- [ ] Ring statistics calculated
-- [ ] Structures compared with available experimental/literature data
-
-**Primary output:**
-
-Validated ensemble of amorphous IGZO structures.
+**Validated pristine crystalline electronic structure**
 
 ---
 
-# Milestone 4 — Machine-Learning Potential
+## Milestone 3 — Crystalline Oxygen Vacancies
 
-- [ ] AIMD configurations selected
-- [ ] DFT reference dataset generated
-- [ ] Dataset cleaned
-- [ ] Training/validation/test sets created
-- [ ] Initial MACE model trained
-- [ ] Energy errors evaluated
-- [ ] Force errors evaluated
-- [ ] Unseen configurations tested
-- [ ] Structural stability tested
-- [ ] MD stability tested
-- [ ] Domain of validity established
+- [ ] Identify inequivalent oxygen sites
+- [ ] Generate vacancy structures
+- [ ] Relax defects
+- [ ] Calculate vacancy energetics
+- [ ] Analyse local relaxation
+- [ ] Analyse electronic states
+- [ ] Investigate relevant charge states
 
-**Primary output:**
+Primary output:
 
-Validated MACE potential for the intended IGZO configuration space.
+**First-principles crystalline oxygen-vacancy dataset**
 
 ---
 
-# Milestone 5 — Large-Scale Sampling
+## Milestone 4 — Amorphous IGZO
 
-- [ ] MACE-LAMMPS interface validated
-- [ ] Small-system tests completed
-- [ ] Production MD parameters established
-- [ ] Independent trajectories generated
-- [ ] Large amorphous ensemble generated
-- [ ] Structural statistics calculated
-- [ ] System-size effects assessed where necessary
+- [ ] Establish CP2K AIMD parameters
+- [ ] Establish melt protocol
+- [ ] Establish quench protocol
+- [ ] Generate independent trajectories
+- [ ] Generate 10–20 candidate amorphous structures
+- [ ] Relax selected structures
+- [ ] Validate density
+- [ ] Validate RDFs
+- [ ] Validate coordination
+- [ ] Validate medium-range structure
 
-**Primary output:**
+Primary output:
 
-Statistically meaningful ensemble of amorphous IGZO structures.
-
----
-
-# Milestone 6 — Oxygen Vacancy Statistics
-
-- [ ] Vacancy generation applied to amorphous structures
-- [ ] Local vacancy environments classified
-- [ ] Representative structures selected
-- [ ] DFT vacancy calculations performed
-- [ ] Vacancy formation-energy distribution obtained
-- [ ] Local structural descriptors calculated
-- [ ] Structural/energetic correlations analysed
-- [ ] Crystalline and amorphous vacancy behaviour compared
-
-**Primary output:**
-
-Statistical description of oxygen-vacancy energetics in amorphous IGZO.
+**Validated amorphous IGZO ensemble**
 
 ---
 
-# Milestone 7 — Electronic Properties
+## Milestone 5 — MACE Dataset
 
-- [ ] Representative amorphous structures selected
-- [ ] Pristine amorphous electronic properties calculated
-- [ ] Representative vacancy structures calculated
-- [ ] Defect states identified
-- [ ] DOS/PDOS analysed
-- [ ] Charge localisation analysed
-- [ ] Crystalline/amorphous electronic properties compared
+- [ ] Define configuration classes
+- [ ] Sample DFT/AIMD configurations
+- [ ] Remove excessive correlation
+- [ ] Generate reference energies
+- [ ] Generate reference forces
+- [ ] Generate stresses where required
+- [ ] Create train/validation/test split
+- [ ] Version dataset
 
-**Primary output:**
+Primary output:
 
-Relationship between structural disorder, oxygen vacancies and
-electronic properties.
-
----
-
-# Milestone 8 — Scientific Dissemination
-
-- [ ] Central scientific narrative established
-- [ ] Final analysis completed
-- [ ] Publication-quality figures generated
-- [ ] Computational methods documented
-- [ ] Reproducibility audit completed
-- [ ] Internal Nanosystems Advisory review completed
-- [ ] Manuscript prepared
-- [ ] Appropriate publication venue selected
-- [ ] Code/data release strategy established
-
-**Primary output:**
-
-Publication-ready research package.
+**Validated IGZO reference dataset**
 
 ---
 
-# Initial Dataset Targets
+## Milestone 6 — MACE Potential
 
-These are planning targets rather than fixed requirements.
+- [ ] Train initial model
+- [ ] Evaluate energies
+- [ ] Evaluate forces
+- [ ] Evaluate unseen structures
+- [ ] Test geometry optimisation
+- [ ] Test MD stability
+- [ ] Identify extrapolation
+- [ ] Iteratively improve dataset
+- [ ] Establish domain of validity
 
-| Dataset | Initial target |
-|---|---:|
-| Crystalline models | 1–3 |
-| CP2K amorphous structures | 10–20 |
-| Initial AIMD configurations | 1,000–5,000 |
-| MACE training set | ~70% |
-| MACE validation set | ~15% |
-| MACE test set | ~15% |
-| Independent MACE test structures | 200–500 |
-| Large-scale amorphous structures | Hundreds–1,000s |
-| DFT validation subset | ~50–200 |
+Primary output:
 
-Dataset sizes should be revised according to configuration-space
-coverage, convergence and model validation.
+**Validated MACE potential**
 
 ---
 
-# Scientific Narrative
+## Milestone 7 — LAMMPS Sampling
 
-The intended progression is:
+- [ ] Integrate MACE with LAMMPS
+- [ ] Validate small system
+- [ ] Generate larger systems
+- [ ] Run independent trajectories
+- [ ] Produce amorphous ensemble
+- [ ] Analyse system-size effects
 
-    crystalline IGZO
-            ↓
-    structural disorder
-            ↓
-    amorphous IGZO
-            ↓
-    validated MACE potential
-            ↓
-    large-scale structural sampling
-            ↓
-    oxygen vacancies
-            ↓
-    defect energetics
-            ↓
-    electronic consequences
+Primary output:
 
-The objective is to progress from computational methodology to
-statistically meaningful scientific conclusions.
+**Large-scale amorphous IGZO ensemble**
+
+---
+
+## Milestone 8 — Amorphous Oxygen Vacancies
+
+- [ ] Characterise local oxygen environments
+- [ ] Select representative sites
+- [ ] Generate defects
+- [ ] Perform DFT calculations
+- [ ] Calculate formation-energy distributions
+- [ ] Identify structural correlations
+- [ ] Compare crystalline and amorphous behaviour
+
+Primary output:
+
+**Statistical oxygen-vacancy model**
+
+---
+
+## Milestone 9 — Publication
+
+- [ ] Finalise analysis
+- [ ] Generate publication-quality figures
+- [ ] Complete reproducibility audit
+- [ ] Complete internal IP review
+- [ ] Prepare technical report
+- [ ] Prepare manuscript
+- [ ] Determine code/data release
+- [ ] Create repository release
+
+Primary output:
+
+**Publication-ready research package**

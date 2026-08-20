@@ -1,225 +1,184 @@
-# IGZO Dataset Plan
+# Dataset Plan
 
-This document defines the initial dataset strategy for the IGZO defect
-modelling project.
+This document defines the initial data-generation strategy for the
+IGZO defect-modelling project.
 
-Dataset sizes are planning targets and should be revised according to
-configuration-space coverage, convergence and scientific requirements.
-
----
-
-## 1. Crystalline Structures
-
-### Initial target
-
-1–3 candidate crystalline IGZO structures.
-
-### Purpose
-
-- Structural benchmarking
-- Selection of the reference crystalline model
-- Comparison with literature
-
-### Required information
-
-- Composition
-- Structure type
-- Lattice parameters
-- Atomic coordinates
-- Density
-- Source/provenance
-- Relaxation status
+Dataset sizes are planning targets rather than fixed requirements.
 
 ---
 
-## 2. Crystalline Oxygen Vacancies
+## Crystalline Reference Data
 
-### Initial strategy
+### Experimental reference
 
-Investigate all relevant inequivalent oxygen sites in the selected
-crystalline model.
+Current reference:
 
-### Required information
+    COD 1521670
 
-- Parent structure
-- Oxygen site
-- Vacancy charge state
-- Supercell
-- Relaxed geometry
-- Formation energy
-- Electronic structure
+The original CIF is retained unchanged.
 
----
+### Ordered crystalline models
 
-## 3. Amorphous IGZO
+The experimental mixed Ga/Zn structure generates:
 
-### Initial target
+    20 raw Ga/Zn assignments
 
-Approximately 10–20 independent amorphous structures.
+which are reduced to:
 
-### Generation
+    4 symmetry-distinct candidate structures
 
-CP2K DFT/AIMD melt-quench simulations.
-
-### Diversity requirements
-
-The ensemble should represent variation in:
-
-- Local coordination
-- Bond lengths
-- Bond angles
-- Density
-- Structural motifs
-
-Multiple independent trajectories should be preferred over repeatedly
-sampling a single trajectory.
+These structures form the initial crystalline configuration set.
 
 ---
 
-## 4. AIMD / MACE Dataset
+## Crystalline DFT Dataset
 
-### Initial target
+Initial data should include:
 
-Approximately 1,000–5,000 configurations.
+- four ordered structures before relaxation
+- four relaxed structures
+- total energies
+- forces
+- stresses where appropriate
+- lattice parameters
+- relative energies
 
-### Sources
-
-- Melt configurations
-- Quench configurations
-- Room-temperature configurations
-- Thermally distorted configurations
-- Structurally diverse amorphous configurations
-- Defect configurations where required
-
-### Properties
-
-Where possible, configurations should contain:
-
-- Total energy
-- Atomic forces
-- Stress tensor
+Additional distorted crystalline structures may later be included for
+machine-learning training.
 
 ---
 
-## 5. Dataset Splitting
+## Amorphous Structures
 
 Initial target:
 
-- Training: ~70%
-- Validation: ~15%
-- Test: ~15%
+    approximately 10–20 independent structures
 
-Splitting should avoid placing highly correlated trajectory frames in
-different subsets where this would cause data leakage.
+Generation method:
 
-The test set should represent configurations that are genuinely
-independent from the training data.
+    CP2K AIMD melt-quench
+
+The final number should depend on structural convergence and diversity.
 
 ---
 
-## 6. MACE Validation Dataset
+## Initial MACE Dataset
 
-### Initial target
+Planning target:
 
-Approximately 200–500 independent configurations.
+    approximately 1,000–5,000 configurations
 
-The validation set should include:
+Potential configuration classes:
 
-- Different amorphous structures
-- Different local environments
-- Different temperatures
-- Distorted configurations
-- Defect environments where relevant
+- relaxed crystalline
+- strained crystalline
+- thermally distorted crystalline
+- melt
+- liquid
+- quench
+- amorphous
+- defect-containing structures where required
 
-Validation should assess both numerical errors and physical behaviour.
-
----
-
-## 7. Large-Scale LAMMPS Dataset
-
-### Initial target
-
-Hundreds to thousands of sampled configurations, depending on system
-size and computational cost.
-
-### Purpose
-
-- Structural statistics
-- Local environment statistics
-- Amorphous ensemble generation
-- Identification of representative structures
-- Oxygen-vacancy sampling
+Dataset diversity is more important than raw snapshot count.
 
 ---
 
-## 8. Oxygen Vacancy Dataset
+## Dataset Splitting
 
-The final defect dataset should contain a statistically meaningful
-sample of vacancy environments.
+Initial target:
 
-For each selected vacancy:
+- training: ~70%
+- validation: ~15%
+- test: ~15%
 
-- Parent structure
-- Vacancy site
-- Local coordination
-- Local structural descriptors
-- Relaxed structure
-- Formation energy
-- Electronic properties where calculated
+Highly correlated frames from the same trajectory should not be randomly
+distributed across all three subsets where this would cause leakage.
 
-The objective is to determine distributions and correlations rather
-than relying on a single representative vacancy.
+Independent trajectories should be used where practical.
 
 ---
 
-## 9. Data Storage
+## MACE Validation Dataset
 
-Large datasets should not normally be stored directly in the GitHub
-repository.
+Initial planning target:
+
+    approximately 200–500 independent configurations
+
+Validation configurations should sample environments distinct from the
+training configurations.
+
+---
+
+## Large-Scale Sampling
+
+MACE/LAMMPS production simulations may eventually generate:
+
+    hundreds to thousands of representative configurations
+
+Large trajectory files should remain on HPC or research-data storage.
+
+---
+
+## Oxygen-Vacancy Dataset
+
+The amorphous vacancy dataset should contain a statistically meaningful
+range of local oxygen environments.
+
+For each vacancy, record where possible:
+
+- parent structure
+- oxygen identifier
+- neighbouring cations
+- coordination
+- local bond lengths
+- defect charge
+- relaxation result
+- formation energy
+- electronic properties
+
+---
+
+## Data Storage
 
 ### GitHub
 
 Store:
 
-- Dataset-generation scripts
-- Dataset schemas
-- Metadata
-- Small example datasets
-- Data-processing scripts
-- Documentation
+- generation scripts
+- metadata
+- small reference structures
+- input templates
+- analysis code
+- small curated examples
 
 ### HPC / Research Storage
 
 Store:
 
-- Raw AIMD trajectories
-- Large DFT datasets
-- Large MACE datasets
-- LAMMPS trajectories
-- Intermediate calculation outputs
+- raw DFT calculations
+- AIMD trajectories
+- large ML datasets
+- production LAMMPS trajectories
+- restart files
+- intermediate data
 
-### Public Data Repository
+### Data Repository
 
-Potentially release:
+Potential future public releases:
 
-- Curated datasets
-- Final structures
-- Selected reference calculations
-- Trained models
-
-A DOI-based archive should be considered when the dataset reaches a
-stable release.
+- curated datasets
+- selected structures
+- trained models
+- supporting publication data
 
 ---
 
-## 10. Dataset Versioning
+## Dataset Versioning
 
-Datasets should use explicit versions:
+Use explicit versions such as:
 
     igzo_mace_training_v01
     igzo_mace_training_v02
 
-A new version should be created when the dataset composition changes
-substantially.
-
-The metadata should record the relationship between dataset versions.
+A new version should be created when the composition or scope of a
+dataset changes substantially.

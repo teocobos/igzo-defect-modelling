@@ -1,182 +1,349 @@
+# Methodology
+
+This document describes the planned computational methodology for the
+IGZO defect-modelling project.
+
+The methodology will evolve as convergence tests and validation studies
+are completed.
 
 ---
 
-# 4. `docs/methodology.md`
+## 1. Experimental Crystalline Reference
 
-This is particularly important for your project because it records **why** you're using VASP, CP2K, MACE and LAMMPS rather than simply listing them.
+The initial crystalline reference is stoichiometric InGaZnO4.
 
-```markdown
-# Computational Methodology
+The primary crystallographic structure is obtained from:
 
-## 1. General Principle
+**Crystallography Open Database — COD 1521670**
 
-Each computational method should have a defined scientific purpose.
+The original CIF is retained unchanged under:
 
-### VASP
+    structures/crystalline/reference/
 
-Primary role:
-
-- Crystalline IGZO reference calculations.
-- High-quality electronic-structure calculations.
-- Selected defect calculations.
-
-### CP2K
-
-Primary role:
-
-- DFT molecular dynamics.
-- Melt-quench simulations.
-- Amorphous IGZO reference configurations.
-- DFT validation of ML-generated structures.
-
-### MACE
-
-Primary role:
-
-- Learning the IGZO potential-energy surface from DFT data.
-- Accelerating atomistic sampling after validation.
-
-### LAMMPS
-
-Primary role:
-
-- Large-scale molecular dynamics using a validated interatomic potential.
-- Longer and larger simulations than practical with direct DFT.
-
-### AiiDA
-
-Primary role:
-
-- Workflow automation.
-- Provenance.
-- Reproducibility.
-- High-throughput defect calculations.
+The experimental structure contains mixed Ga/Zn occupancy and therefore
+cannot be used directly as a conventional ordered atomistic DFT model.
 
 ---
 
-## 2. DFT Methodology
+## 2. Ga/Zn Ordering
 
-The following parameters must be established through convergence testing rather than assumed.
+The mixed Ga/Zn crystallographic sites are converted into explicit
+ordered configurations.
 
-| Parameter | Planned Value | Status |
-|---|---|---|
-| Exchange-correlation functional | TBD | Not established |
-| Hubbard U | TBD | To assess |
-| VASP PAW datasets | TBD | To establish |
-| Plane-wave cutoff | TBD | Convergence required |
-| k-point mesh | TBD | Convergence required |
-| Electronic convergence | TBD | Convergence required |
-| Ionic convergence | TBD | Convergence required |
-| Spin treatment | TBD | To assess |
-| Supercell size | TBD | Convergence required |
+For the current conventional cell, six mixed positions must be occupied
+by:
 
----
+    3 Ga
+    3 Zn
 
-## 3. Cross-Code Validation
+giving:
 
-VASP and CP2K use different electronic-structure implementations.
+    C(6,3) = 20
 
-Direct comparison of absolute energies should therefore be avoided unless methodological consistency has been established.
+raw assignments.
 
-A small benchmark set should be calculated using both codes.
+Symmetry-equivalent configurations are removed before first-principles
+screening.
 
-Compare:
+The initial workflow produces four symmetry-distinct ordered candidate
+structures.
 
-- Optimised geometry.
-- Relative structural energies.
-- Forces where appropriate.
-- DOS/PDOS where meaningful.
-- Band-gap trends.
+Structure generation is performed programmatically using:
 
-Document differences in:
+    scripts/structure_generation/generate_igzo_orderings.py
 
-- Basis sets.
-- Pseudopotentials.
-- Cutoffs.
-- Numerical settings.
+Manual editing of the experimental CIF should be avoided.
 
 ---
 
-## 4. Oxygen-Vacancy Methodology
+## 3. Crystalline Model Selection
 
-For an oxygen vacancy:
+The ordered structures will be geometry-optimised using a consistent
+first-principles methodology.
 
-V_O
+For each configuration, quantities including the following will be
+recorded:
 
-the formation energy should be calculated using an explicitly documented thermodynamic convention.
+- total energy
+- energy per formula unit
+- relative energy
+- relaxed lattice parameters
+- atomic forces
+- structural symmetry
+- coordination environments
 
-For charge state q:
-
-E_f(D^q) = E_defect^q - E_bulk - Σ_i n_i μ_i + q(E_F + E_VBM) + E_corr
-
-The exact convention, chemical potentials and correction methodology must be documented before production calculations.
-
----
-
-## 5. Amorphous Modelling
-
-Amorphous structures should be generated using multiple independent configurations to avoid conclusions based on a single structural realisation.
-
-The melt-quench protocol must document:
-
-- Initial structure.
-- Number of atoms.
-- Density.
-- Initial temperature.
-- Maximum temperature.
-- Liquid equilibration time.
-- Quench rate.
-- Final temperature.
-- Ensemble.
-- Time step.
-- Thermostat/barostat.
-- Number of independent seeds.
+The preferred crystalline reference will be selected only after this
+comparison.
 
 ---
 
-## 6. ML Potential Validation
+## 4. CP2K
 
-MACE models should not be used for scientific conclusions until validated against an independent DFT test set.
+CP2K provides the initial first-principles workflow.
 
-At minimum, report:
+### Initial applications
 
-- Energy MAE/RMSE.
-- Force MAE/RMSE.
-- Stress errors if relevant.
-- Structural stability.
-- Representative extrapolation behaviour.
+- convergence testing
+- crystalline geometry optimisation
+- comparison of Ga/Zn ordered structures
+- ab initio molecular dynamics
+- amorphisation
+- generation of reference configurations for machine learning
 
-Training and validation sets must remain separate.
+### Convergence
 
----
+Parameters requiring systematic evaluation include:
 
-## 7. Data Management
+- basis-set quality
+- pseudopotential selection
+- CUTOFF
+- REL_CUTOFF
+- SCF convergence
+- k-point sampling
+- geometry-optimisation tolerances
 
-Large raw files should not be committed to GitHub.
-
-Examples:
-
-- VASP WAVECAR.
-- Large CHGCAR files.
-- OUTCAR files from production calculations.
-- Long AIMD trajectories.
-- Large LAMMPS trajectories.
-- Large MACE datasets/checkpoints.
-
-Large datasets should instead be archived using appropriate research-data storage.
+Production parameters should not be selected solely because they are
+commonly used values.
 
 ---
 
-## 8. Reproducibility
+## 5. VASP
 
-Every production result should be traceable to:
+VASP will provide a complementary first-principles workflow once the
+required computational environment is available.
 
-- Structure.
-- Code and version.
-- Input parameters.
-- Pseudopotential/basis information.
-- Workflow.
-- Analysis script.
-- Data provenance.
+Planned applications include:
 
-Methodological changes should be recorded in Git history and documented here where significant.
+- crystalline relaxation
+- convergence testing
+- band structure
+- density of states
+- projected density of states
+- oxygen-vacancy calculations
+- defect formation energies
+- charged defects where appropriate
+
+Cross-code comparisons between CP2K and VASP should use equivalent
+physical approximations wherever practical.
+
+---
+
+## 6. Oxygen Vacancies
+
+Oxygen vacancies will initially be investigated in the selected
+crystalline reference structure.
+
+The workflow will include:
+
+    pristine structure
+            ↓
+    identify oxygen sites
+            ↓
+    generate vacancy structures
+            ↓
+    geometry optimisation
+            ↓
+    defect energetics
+            ↓
+    electronic structure
+            ↓
+    local structural analysis
+
+Symmetry should be used to avoid unnecessary calculations for equivalent
+oxygen sites.
+
+For amorphous structures, oxygen sites will generally be locally
+inequivalent and statistical sampling will therefore be required.
+
+---
+
+## 7. CP2K Amor­phisation
+
+Amorphous IGZO will initially be generated using first-principles
+molecular dynamics.
+
+The intended workflow is:
+
+    initial structure
+          ↓
+    equilibration
+          ↓
+       heating
+          ↓
+        melt
+          ↓
+       quench
+          ↓
+    low-temperature equilibration
+          ↓
+    geometry optimisation
+          ↓
+    amorphous IGZO
+
+The following parameters will be established and documented:
+
+- initial cell
+- density
+- timestep
+- ensemble
+- thermostat
+- melt temperature
+- melt duration
+- quench rate
+- final temperature
+- equilibration duration
+
+Multiple independent trajectories should be generated.
+
+---
+
+## 8. Amorphous Structure Validation
+
+Generated structures will be evaluated using structural descriptors
+including:
+
+- density
+- radial distribution functions
+- partial radial distribution functions
+- coordination numbers
+- bond lengths
+- bond angles
+- local polyhedra
+- ring statistics where appropriate
+
+Results should be compared with available experimental and computational
+literature.
+
+---
+
+## 9. MACE Dataset Generation
+
+First-principles configurations will be selected to represent the
+configuration space required by the potential.
+
+Potential configurations include:
+
+- crystalline structures
+- strained structures
+- thermally distorted structures
+- melt configurations
+- liquid configurations
+- quench configurations
+- amorphous structures
+- defect environments where required
+
+Configurations should contain reference:
+
+- energies
+- forces
+- stresses where appropriate
+
+Highly correlated consecutive AIMD frames should not dominate the
+dataset.
+
+---
+
+## 10. MACE Training and Validation
+
+Datasets will be divided into training, validation and independent test
+sets.
+
+Validation should consider:
+
+- energy MAE/RMSE
+- force MAE/RMSE
+- stress errors where applicable
+- structural properties
+- energetic ordering
+- molecular-dynamics stability
+- behaviour on unseen configurations
+
+Numerical test-set accuracy alone is insufficient to establish that the
+potential is suitable for production simulation.
+
+---
+
+## 11. LAMMPS Sampling
+
+Following validation, MACE will be used with LAMMPS for larger-scale
+molecular dynamics.
+
+This will enable:
+
+- larger simulation cells
+- longer trajectories
+- independent melt-quench simulations
+- structural ensemble generation
+- statistical sampling of local environments
+
+Representative configurations may subsequently be returned to
+first-principles calculations for validation.
+
+---
+
+## 12. Statistical Defect Sampling
+
+The large amorphous ensemble will provide oxygen environments spanning
+different:
+
+- coordination numbers
+- cation neighbours
+- bond lengths
+- bond angles
+- local densities
+- structural motifs
+
+Representative oxygen sites will be selected for vacancy calculations.
+
+The objective is to obtain distributions of defect properties rather
+than relying on a single amorphous vacancy configuration.
+
+---
+
+## 13. Analysis
+
+Analysis will primarily use Python together with:
+
+- NumPy
+- pandas
+- SciPy
+- ASE
+- pymatgen
+- matplotlib
+
+All important analysis should be reproducible from scripts wherever
+practical.
+
+---
+
+## Overall Methodology
+
+    COD 1521670
+          ↓
+    experimental average structure
+          ↓
+    Ga/Zn ordering
+          ↓
+    ordered crystalline candidates
+          ↓
+    first-principles comparison
+          ↓
+    crystalline reference
+       ┌──┴──────────────┐
+       ↓                 ↓
+    defects          CP2K AIMD
+                         ↓
+                    amorphous IGZO
+                         ↓
+                    DFT dataset
+                         ↓
+                       MACE
+                         ↓
+                     LAMMPS
+                         ↓
+               large-scale ensemble
+                         ↓
+                 vacancy statistics
+                         ↓
+              structural/electronic
+                    conclusions

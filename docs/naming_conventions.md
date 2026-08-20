@@ -1,121 +1,144 @@
-# Naming Conventions
-
-This document defines the naming conventions used throughout the
-IGZO defect modelling project.
-
-## General Principles
-
-- Use lowercase filenames.
-- Use underscores `_` to separate fields.
-- Use descriptive, machine-readable names.
-- Avoid spaces and special characters.
-- Use consistent identifiers for structures, calculations, datasets,
-  models and figures.
-- Use version identifiers where deliberate versions exist.
-- Avoid temporary HPC job IDs in permanent filenames.
-- Preserve identifiers when structures move between computational stages.
 
 ---
 
-## Structures
+# 6. `docs/naming_conventions.md`
 
-### Crystalline Structures
+```markdown
+# Naming Conventions
+
+This document defines naming conventions for structures, calculations,
+datasets, models and figures.
+
+---
+
+## General Rules
+
+- Use lowercase filenames.
+- Use underscores `_` between fields.
+- Avoid spaces.
+- Avoid temporary HPC job IDs in permanent filenames.
+- Use explicit version numbers.
+- Preserve identifiers throughout derived workflows.
+- Avoid names such as `final`, `final2` or `new_final`.
+
+---
+
+# Reference Structures
 
 Format:
 
-    igzo_crystal_<composition>_<structure>_<version>
+    igzo_crystal_<composition>_<source>
+
+Current example:
+
+    igzo_crystal_ingazno4_cod1521670.cif
+
+The external database identifier should be retained in reference
+structure filenames where practical.
+
+---
+
+# Ordered Crystalline Models
+
+Format:
+
+    igzo_crystal_ordered_<identifier>
+
+Examples:
+
+    igzo_crystal_ordered_001
+    igzo_crystal_ordered_002
+    igzo_crystal_ordered_003
+    igzo_crystal_ordered_004
+
+Model identifiers do not imply energetic ranking.
+
+---
+
+# Relaxed Structures
+
+Format:
+
+    <structure_id>_relaxed
 
 Example:
 
-    igzo_crystal_111_primitive_v01.vasp
+    igzo_crystal_ordered_001_relaxed
 
-### Amorphous Structures
+---
+
+# Amorphous Structures
 
 Format:
 
-    igzo_amorphous_<cellsize>_<trajectory>_<frame>
+    igzo_amorphous_<natoms>atoms_<trajectory>_<frame>
 
 Example:
 
     igzo_amorphous_120atoms_traj03_frame0450.xyz
 
-### Defect Structures
-
-Format:
-
-    igzo_<defect_type>_<site>_<charge>_<version>
-
-Example:
-
-    igzo_vacancy_o17_q0_v01.vasp
-
 ---
 
-## Calculations
+# Defects
 
 Format:
 
-    <software>_<system>_<calculation_type>
+    igzo_<host>_<defect>_<site>_<charge>
 
 Examples:
 
-    vasp_pristine_relax
-    vasp_pristine_band
-    vasp_pristine_dos
-    vasp_vacancy_o17_q0
-
-    cp2k_melt_traj01
-    cp2k_quench_traj01
-
-    mace_train_v01
-    mace_test_v01
-
-    lammps_amorphous_001
+    igzo_crystal_vacancy_o017_q0
+    igzo_amorphous_vacancy_o043_q+2
 
 ---
 
-## Trajectories
-
-Format:
-
-    <software>_<system>_<trajectory_type>_<identifier>
+# CP2K Calculations
 
 Examples:
 
-    cp2k_igzo_melt_traj01
-    cp2k_igzo_quench_traj01
-    lammps_igzo_amorphous_traj001
+    cp2k_crystal_convergence_cutoff
+    cp2k_crystal_relax_ordered_001
+    cp2k_aimd_melt_traj01
+    cp2k_aimd_quench_traj01
 
 ---
 
-## Datasets
-
-Format:
-
-    igzo_<dataset_type>_<version>
+# VASP Calculations
 
 Examples:
+
+    vasp_crystal_relax
+    vasp_crystal_band
+    vasp_crystal_dos
+    vasp_vacancy_o017_q0
+
+---
+
+# MACE
+
+Datasets:
 
     igzo_mace_training_v01
     igzo_mace_validation_v01
     igzo_mace_test_v01
 
+Models:
+
+    mace_igzo_v01
+    mace_igzo_v02
+
 ---
 
-## MACE Models
-
-Format:
-
-    mace_igzo_<model_type>_<version>
+# LAMMPS
 
 Examples:
 
-    mace_igzo_amorphous_v01
-    mace_igzo_defect_v01
+    lammps_igzo_amorphous_traj001
+    lammps_igzo_amorphous_traj002
 
 ---
 
-## Figures
+# Figures
 
 Format:
 
@@ -123,30 +146,15 @@ Format:
 
 Examples:
 
-    fig_01_crystalline_structure
-    fig_02_vasp_convergence
-    fig_03_band_structure
-    fig_04_pristine_dos
-    fig_05_vacancy_formation_energy
+    fig_01_crystal_structure
+    fig_02_cp2k_convergence
+    fig_03_ordering_energies
+    fig_04_band_structure
+    fig_05_vacancy_distribution
 
 ---
 
-## Scripts
-
-Use descriptive names indicating the purpose of the script.
-
-Examples:
-
-    generate_vacancies.py
-    calculate_rdf.py
-    analyse_coordination.py
-    calculate_ring_statistics.py
-    plot_pdos.py
-    calculate_vacancy_statistics.py
-
----
-
-## Versions
+# Versioning
 
 Use:
 
@@ -154,52 +162,6 @@ Use:
     v02
     v03
 
-for deliberate versions of structures, datasets, models or workflows.
+for deliberate dataset, model or workflow versions.
 
-Avoid ambiguous names such as:
-
-    final
-    final2
-    final_new
-    final_really_final
-
----
-
-## Identifiers
-
-Use consistent identifiers for:
-
-- Structures
-- Oxygen sites
-- Defect charge states
-- Trajectories
-- AIMD frames
-- Datasets
-- MACE models
-- LAMMPS simulations
-
-The same identifier should be retained throughout the project wherever
-possible.
-
----
-
-## Provenance
-
-Names should allow a structure or dataset to be traced through the
-computational workflow.
-
-Example:
-
-    crystalline structure
-            ↓
-    relaxed structure
-            ↓
-    amorphous AIMD structure
-            ↓
-    MACE dataset configuration
-            ↓
-    LAMMPS sampled configuration
-            ↓
-    oxygen-vacancy structure
-            ↓
-    DFT defect calculation
+Version numbers should not be used as substitutes for Git history.
