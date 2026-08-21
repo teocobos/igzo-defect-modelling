@@ -63,3 +63,15 @@ tmp/
 slurm-*.out
 *.e*
 *.o*
+
+# CP2K restart / wavefunction files
+*-RESTART.kp
+*-RESTART.kp.bak-*
+*.restart
+*.restart.bak-*
+*.wfn
+*.wfn.bak-*
+
+# Crash dumps
+core
+core.*
