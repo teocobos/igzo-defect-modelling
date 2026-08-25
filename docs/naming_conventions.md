@@ -1,9 +1,3 @@
-
----
-
-# 6. `docs/naming_conventions.md`
-
-```markdown
 # Naming Conventions
 
 This document defines naming conventions for structures, calculations,
@@ -13,23 +7,23 @@ datasets, models and figures.
 
 ## General Rules
 
-- Use lowercase filenames.
+- Use lowercase filenames where practical.
 - Use underscores `_` between fields.
 - Avoid spaces.
 - Avoid temporary HPC job IDs in permanent filenames.
-- Use explicit version numbers.
+- Use explicit version numbers for deliberate dataset/model releases.
 - Preserve identifiers throughout derived workflows.
 - Avoid names such as `final`, `final2` or `new_final`.
 
 ---
 
-# Reference Structures
+## Reference Structures
 
 Format:
 
     igzo_crystal_<composition>_<source>
 
-Current example:
+Example:
 
     igzo_crystal_ingazno4_cod1521670.cif
 
@@ -38,7 +32,7 @@ structure filenames where practical.
 
 ---
 
-# Ordered Crystalline Models
+## Ordered Crystalline Models
 
 Format:
 
@@ -55,19 +49,41 @@ Model identifiers do not imply energetic ranking.
 
 ---
 
-# Relaxed Structures
+## Relaxed Structures
 
 Format:
 
     <structure_id>_relaxed
 
-Example:
+Examples:
 
     igzo_crystal_ordered_001_relaxed
+    igzo_crystal_ordered_003_relaxed
+
+The selected primary crystalline reference retains its original
+ordering identifier rather than being renamed to `final`.
 
 ---
 
-# Amorphous Structures
+## Crystalline Supercells
+
+Format:
+
+    <structure_id>_supercell_<na>x<nb>x<nc>
+
+If derived from an explicitly unrelaxed parent during workflow
+development, append:
+
+    _unrelaxed
+
+Examples:
+
+    igzo_crystal_ordered_003_relaxed_supercell_2x2x1
+    igzo_crystal_ordered_001_supercell_3x3x1_unrelaxed
+
+---
+
+## Amorphous Structures
 
 Format:
 
@@ -75,11 +91,14 @@ Format:
 
 Example:
 
-    igzo_amorphous_120atoms_traj03_frame0450.xyz
+    igzo_amorphous_189atoms_traj03_frame0450.xyz
+
+A density or protocol identifier may be added if multiple controlled
+amorphisation protocols are compared.
 
 ---
 
-# Defects
+## Defects
 
 Format:
 
@@ -87,34 +106,39 @@ Format:
 
 Examples:
 
-    igzo_crystal_vacancy_o017_q0
-    igzo_amorphous_vacancy_o043_q+2
+    igzo_crystal_ordered_003_vacancy_o001_q0
+    igzo_amorphous_189atoms_traj03_vacancy_o043_q+2
+
+For symmetry-reduced crystalline defects, `site` should correspond to a
+stable site label recorded in the defect metadata.
 
 ---
 
-# CP2K Calculations
+## CP2K Calculations
 
 Examples:
 
     cp2k_crystal_convergence_cutoff
     cp2k_crystal_relax_ordered_001
+    cp2k_crystal_sp_ordered_003
+    cp2k_crystal_vacancy_o001_q0
     cp2k_aimd_melt_traj01
     cp2k_aimd_quench_traj01
 
 ---
 
-# VASP Calculations
+## VASP Calculations
 
 Examples:
 
     vasp_crystal_relax
     vasp_crystal_band
     vasp_crystal_dos
-    vasp_vacancy_o017_q0
+    vasp_vacancy_o001_q0
 
 ---
 
-# MACE
+## MACE
 
 Datasets:
 
@@ -129,7 +153,7 @@ Models:
 
 ---
 
-# LAMMPS
+## LAMMPS
 
 Examples:
 
@@ -138,7 +162,7 @@ Examples:
 
 ---
 
-# Figures
+## Figures
 
 Format:
 
@@ -149,12 +173,13 @@ Examples:
     fig_01_crystal_structure
     fig_02_cp2k_convergence
     fig_03_ordering_energies
-    fig_04_band_structure
-    fig_05_vacancy_distribution
+    fig_04_relaxed_polyhedra
+    fig_05_band_structure
+    fig_06_vacancy_energies
 
 ---
 
-# Versioning
+## Versioning
 
 Use:
 

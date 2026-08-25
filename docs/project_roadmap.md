@@ -2,17 +2,26 @@
 
 ## Milestone 1 — Crystalline Reference
 
-- [x] Identify experimental InGaZnO4 structure
-- [x] Obtain COD reference CIF
-- [x] Record provenance
-- [x] Identify Ga/Zn mixed occupancy
-- [x] Establish ordering strategy
-- [x] Generate four symmetry-distinct ordered models
-- [x] Validate generated structures
-- [ ] Establish CP2K convergence parameters
-- [ ] Relax ordered structures
-- [ ] Compare relative energies
-- [ ] Select crystalline reference model
+- [x] Obtain experimental InGaZnO4 parent structure
+- [x] Generate ordered crystalline models
+- [x] Validate ordered structures
+- [x] Establish CP2K convergence parameters
+- [x] Optimise all four ordered structures
+- [x] Perform tight final single-point calculations
+- [x] Rank ordered structures by relative energy
+- [x] Analyse relaxed symmetry
+- [x] Analyse cation–oxygen coordination
+- [x] Analyse bond-length distributions
+- [x] Analyse coordination-polyhedron distortions
+- [x] Select primary crystalline reference structure
+
+Selected reference:
+
+    igzo_crystal_ordered_003_relaxed
+
+Secondary low-energy ordering:
+
+    igzo_crystal_ordered_001_relaxed
 
 Primary output:
 
@@ -22,13 +31,13 @@ Primary output:
 
 ## Milestone 2 — Crystalline Electronic Structure
 
-- [ ] Relax selected reference
+- [x] Relax selected reference
 - [ ] Calculate DOS
 - [ ] Calculate PDOS
 - [ ] Calculate band structure where appropriate
 - [ ] Identify band-edge orbital character
 - [ ] Compare with literature
-- [ ] Cross-check using VASP when available
+- [ ] Cross-check selected results using VASP when available
 
 Primary output:
 
@@ -38,13 +47,20 @@ Primary output:
 
 ## Milestone 3 — Crystalline Oxygen Vacancies
 
-- [ ] Identify inequivalent oxygen sites
-- [ ] Generate vacancy structures
-- [ ] Relax defects
-- [ ] Calculate vacancy energetics
-- [ ] Analyse local relaxation
-- [ ] Analyse electronic states
-- [ ] Investigate relevant charge states
+- [ ] Identify symmetry-inequivalent oxygen sites in relaxed ordered_003
+- [ ] Determine oxygen-site multiplicities
+- [ ] Characterise local cation coordination of each oxygen site
+- [ ] Generate one vacancy structure per inequivalent oxygen site
+- [ ] Validate generated vacancy structures
+- [ ] Construct defect supercells
+- [ ] Converge supercell size / defect–defect separation
+- [ ] Converge/reassess k-point sampling for defect supercells
+- [ ] Relax neutral oxygen vacancies
+- [ ] Calculate vacancy formation energies
+- [ ] Extend calculations to relevant charge states
+- [ ] Analyse defect-induced structural relaxation
+- [ ] Analyse defect electronic states
+- [ ] Test selected defects in ordered_001 if ordering sensitivity is important
 
 Primary output:
 
@@ -54,15 +70,18 @@ Primary output:
 
 ## Milestone 4 — Amorphous IGZO
 
+- [ ] Select near-isotropic stoichiometric starting cell
+- [ ] Establish target density
 - [ ] Establish CP2K AIMD parameters
 - [ ] Establish melt protocol
 - [ ] Establish quench protocol
 - [ ] Generate independent trajectories
-- [ ] Generate 10–20 candidate amorphous structures
+- [ ] Generate approximately 10–20 candidate amorphous structures
 - [ ] Relax selected structures
 - [ ] Validate density
 - [ ] Validate RDFs
 - [ ] Validate coordination
+- [ ] Validate bond-angle distributions
 - [ ] Validate medium-range structure
 
 Primary output:

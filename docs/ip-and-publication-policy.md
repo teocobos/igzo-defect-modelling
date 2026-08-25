@@ -195,3 +195,25 @@ The guiding principle is:
 
 > Make the scientific methodology reproducible without unnecessarily
 > publishing restricted, proprietary or commercially sensitive data.
+
+---
+
+## Current Repository Release Gate
+
+Before committing newly generated quantitative research results to the
+public repository, confirm that the material is appropriate for public
+release under the project IP policy.
+
+In particular:
+
+- raw ARCHER2 production directories should not be mirrored wholesale;
+- CP2K `*.kp`, wavefunction, restart and other multi-GB runtime files
+  should remain on HPC/research storage;
+- only selected derived structures, reproducible inputs, analysis
+  scripts and approved numerical summaries should be committed;
+- commercially sensitive defect trends, trained models or proprietary
+  datasets should undergo internal review before public release.
+
+The current crystalline reference structures and numerical summaries
+should be treated according to the same release-review principle as
+future defect and amorphous results.

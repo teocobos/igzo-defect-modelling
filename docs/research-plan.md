@@ -1,9 +1,3 @@
-
----
-
-# 3. `docs/research-plan.md`
-
-```markdown
 # Research Plan
 
 ## Project
@@ -12,93 +6,135 @@
 
 ## Core Research Question
 
-How does local structural disorder influence oxygen-vacancy formation and electronic structure in crystalline and amorphous indium gallium zinc oxide (IGZO)?
+How does local structural disorder influence oxygen-vacancy formation
+and electronic structure in crystalline and amorphous indium gallium
+zinc oxide (IGZO)?
 
 ## Motivation
 
-IGZO is a technologically relevant oxide semiconductor used in transparent electronics and display technologies.
+IGZO is a technologically relevant oxide semiconductor used in
+transparent electronics and display technologies.
 
-Its amorphous form is particularly interesting because useful electronic properties can persist despite substantial structural disorder.
+Its amorphous form is particularly interesting because useful electronic
+properties can persist despite substantial structural disorder.
 
-Defects, especially oxygen vacancies, can influence the electronic properties of oxide semiconductors.
+Defects, especially oxygen vacancies, can influence the electronic
+properties of oxide semiconductors.
 
-The central aim of this project is to connect the local atomic environment of IGZO with defect energetics and electronic structure.
+The central aim of this project is to connect the local atomic
+environment of IGZO with defect energetics and electronic structure.
 
-The project also provides a natural extension of previous work on high-throughput oxygen-vacancy modelling in amorphous oxides.
+The project also extends previous experience with high-throughput
+oxygen-vacancy modelling in amorphous oxides.
 
 ---
 
 ## Phase 1 — Literature and Structural Reference
 
-- Identify experimentally reported IGZO compositions and structures.
-- Determine an appropriate crystalline reference structure.
-- Establish realistic stoichiometry and supercell sizes.
-- Review experimental information on amorphous IGZO density, coordination and composition.
-- Review reported defect chemistry and oxygen-vacancy interpretations.
+Current status:
+
+- [x] Identify a primary experimental crystalline reference.
+- [x] Generate explicit ordered Ga/Zn models.
+- [x] Validate four symmetry-distinct ordered structures.
+- [x] Select a primary crystalline computational reference.
+- [ ] Complete the broader crystalline/Ga–Zn-ordering literature review.
+- [ ] Review experimental amorphous IGZO density and coordination.
+- [ ] Complete the oxygen-vacancy literature review.
+
+Selected computational reference:
+
+    igzo_crystal_ordered_003_relaxed
+
+Secondary low-energy ordering:
+
+    igzo_crystal_ordered_001_relaxed
 
 ---
 
 ## Phase 2 — Crystalline IGZO
 
-Use VASP to establish a high-quality reference.
+CP2K currently provides the validated crystalline first-principles
+workflow.
 
-Planned calculations:
+Completed:
 
-- Structural optimisation.
-- Lattice parameters.
-- Convergence tests.
-- Density of states.
-- Projected density of states.
-- Band structure where appropriate.
-- Charge-density analysis.
-- Effective-mass analysis where justified.
+- [x] CP2K convergence testing.
+- [x] Geometry optimisation of all four ordered candidates.
+- [x] Tight final energy comparison.
+- [x] Symmetry/coordination analysis of the two lowest-energy orderings.
+- [x] Bond-distribution analysis.
+- [x] Polyhedral-distortion analysis.
+
+Next:
+
+- [ ] Density of states.
+- [ ] Projected density of states.
+- [ ] Band structure where appropriate.
+- [ ] Band-edge orbital character.
+- [ ] Charge-density analysis where useful.
+- [ ] Effective-mass analysis where justified.
+
+VASP is retained as a complementary future cross-check rather than the
+sole crystalline reference route.
 
 ---
 
-## Phase 3 — Oxygen Vacancies
+## Phase 3 — Crystalline Oxygen Vacancies
 
-Systematically investigate inequivalent oxygen sites.
+Systematically investigate symmetry-inequivalent oxygen sites in relaxed
+`ordered_003`.
 
 For each selected site:
 
-- Generate the oxygen-vacancy structure.
-- Relax the defective structure.
-- Calculate vacancy formation energy.
-- Investigate relevant charge states.
-- Analyse local structural relaxation.
-- Analyse DOS/PDOS and defect states.
-- Record the local chemical environment.
+- generate the oxygen-vacancy structure;
+- record site symmetry and multiplicity;
+- construct an appropriate defect supercell;
+- validate supercell size and k-point sampling;
+- relax the defective structure;
+- calculate vacancy formation energy;
+- investigate relevant charge states;
+- analyse local structural relaxation;
+- analyse DOS/PDOS and defect states;
+- record the local chemical environment.
 
-A key objective is to determine whether vacancy energetics correlate with local In/Ga/Zn coordination.
+A key objective is to determine whether vacancy energetics correlate
+with local In/Ga/Zn coordination.
+
+Selected defects may later be repeated in `ordered_001` to test
+sensitivity to cation ordering.
 
 ---
 
 ## Phase 4 — Amorphous IGZO
 
-Generate independent amorphous configurations using a validated melt-quench protocol.
+Generate independent amorphous configurations using a validated
+melt-quench protocol.
 
 Initial approach:
 
-1. Construct a representative stoichiometric model.
-2. Equilibrate at low temperature.
-3. Heat to a liquid state.
-4. Equilibrate in the liquid regime.
-5. Quench to the target temperature.
-6. Relax the resulting structure.
-7. Repeat for multiple independent configurations.
+1. construct a representative stoichiometric, approximately isotropic
+   cell;
+2. establish/validate target density;
+3. equilibrate at low temperature where appropriate;
+4. heat to a liquid state;
+5. equilibrate in the liquid regime;
+6. quench to the target temperature;
+7. relax the resulting structure;
+8. repeat for multiple independent configurations.
 
 Structural analysis:
 
-- Density.
-- Radial distribution functions.
-- Coordination-number distributions.
-- Bond-angle distributions.
-- In–O environments.
-- Ga–O environments.
-- Zn–O environments.
-- Oxygen coordination.
-- Ring statistics where meaningful.
-- Local structural descriptors.
+- density;
+- radial distribution functions;
+- coordination-number distributions;
+- bond-angle distributions;
+- In–O environments;
+- Ga–O environments;
+- Zn–O environments;
+- oxygen coordination;
+- local polyhedra;
+- ring statistics where meaningful;
+- local structural descriptors.
 
 ---
 
@@ -108,42 +144,45 @@ Select representative oxygen sites across multiple amorphous structures.
 
 Calculate:
 
-- Vacancy formation energies.
-- Local structural relaxation.
-- Relevant charge states.
-- Electronic structure of representative defects.
+- vacancy formation energies;
+- local structural relaxation;
+- relevant charge states;
+- electronic structure of representative defects.
 
-The objective is to obtain a **distribution of defect properties**, rather than a single value.
+The objective is to obtain a **distribution of defect properties**,
+rather than a single value.
 
 ---
 
 ## Phase 6 — Machine-Learning Potential
 
-Generate a DFT dataset containing diverse crystalline, liquid, amorphous and defect configurations.
+Generate a DFT dataset containing diverse crystalline, liquid,
+amorphous and defect configurations.
 
 Train a MACE potential and assess:
 
-- Energy errors.
-- Force errors.
-- Stress errors where relevant.
-- Structural-property reproduction.
-- Stability during MD.
-- Transferability across structural environments.
+- energy errors;
+- force errors;
+- stress errors where relevant;
+- structural-property reproduction;
+- stability during MD;
+- transferability across structural environments.
 
 ---
 
 ## Phase 7 — Large-Scale Sampling
 
-If validated, use MACE through LAMMPS or an appropriate supported workflow to sample larger systems and longer timescales.
+If validated, use MACE through LAMMPS or an appropriate supported
+workflow to sample larger systems and longer timescales.
 
 Potential analyses include:
 
-- Local environment distributions.
-- Oxygen coordination.
-- Structural motifs.
-- Vacancy precursor environments.
-- Temperature dependence.
-- Composition dependence.
+- local environment distributions;
+- oxygen coordination;
+- structural motifs;
+- vacancy precursor environments;
+- temperature dependence;
+- composition dependence.
 
 ---
 
@@ -161,3 +200,4 @@ Defect formation energetics
 Defect electronic structure
         ↓
 Potential influence on semiconductor behaviour
+```

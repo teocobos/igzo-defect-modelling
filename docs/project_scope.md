@@ -2,9 +2,10 @@
 
 ## IGZO Defect Modelling
 
-This project investigates the structural, defect and electronic properties
-of indium gallium zinc oxide (IGZO) using first-principles calculations,
-atomistic simulation and machine-learning interatomic potentials.
+This project investigates the structural, defect and electronic
+properties of indium gallium zinc oxide (IGZO) using first-principles
+calculations, atomistic simulation and machine-learning interatomic
+potentials.
 
 The initial material of interest is stoichiometric:
 
@@ -17,16 +18,16 @@ with particular emphasis on its role as a transparent conducting oxide
 
 ## Scientific Objectives
 
-The initial research objectives are to:
+The project objectives are to:
 
-1. Establish a validated crystalline InGaZnO4 reference model.
-2. Investigate the influence of Ga/Zn ordering in crystalline IGZO.
-3. Characterise the pristine crystalline electronic structure.
-4. Investigate oxygen vacancies and their local environments.
-5. Generate and validate amorphous IGZO structures.
-6. Determine how structural disorder influences oxygen-vacancy behaviour.
-7. Develop machine-learning interatomic potentials for IGZO.
-8. Use large-scale molecular dynamics to obtain statistically meaningful
+1. establish a validated crystalline InGaZnO4 reference model;
+2. investigate the influence of Ga/Zn ordering in crystalline IGZO;
+3. characterise the pristine crystalline electronic structure;
+4. investigate oxygen vacancies and their local environments;
+5. generate and validate amorphous IGZO structures;
+6. determine how structural disorder influences oxygen-vacancy behaviour;
+7. develop machine-learning interatomic potentials for IGZO; and
+8. use large-scale molecular dynamics to obtain statistically meaningful
    structural and defect distributions.
 
 ---
@@ -47,48 +48,67 @@ merohedry.*
 
 Crystal Research and Technology 35 (2000), 151–165.
 
-The experimental CIF contains mixed Ga/Zn occupancy and therefore
-represents an average crystallographic structure.
+The experimental CIF contains mixed Ga/Zn occupancy and represents an
+average crystallographic structure.
 
-Explicit ordered Ga/Zn models will be generated computationally before
-first-principles calculations are performed.
+Twenty raw Ga/Zn assignments were generated programmatically and reduced
+to four symmetry-distinct ordered candidates.
+
+Following converged CP2K geometry optimisation and tight final
+single-point calculations, the primary crystalline computational
+reference is:
+
+    igzo_crystal_ordered_003_relaxed
+
+This structure retains R3m symmetry.
+
+The near-degenerate P3m1 structure:
+
+    igzo_crystal_ordered_001_relaxed
+
+is retained as a secondary low-energy cation ordering.
 
 ---
 
 ## Computational Methods
 
-The project will initially use:
+The project uses/plans:
 
-- CP2K — DFT, geometry optimisation and ab initio molecular dynamics
-- VASP — crystalline DFT, electronic structure and defect calculations
-- MACE — machine-learning interatomic potentials
-- LAMMPS — large-scale molecular dynamics
-- AiiDA — workflow automation and provenance
-- ASE — structure manipulation and analysis
-- pymatgen — crystallographic analysis and structure generation
-- Python — data processing, statistical analysis and visualisation
+- CP2K — DFT, geometry optimisation and ab initio molecular dynamics;
+- VASP — complementary crystalline DFT, electronic structure and defect
+  calculations;
+- MACE — machine-learning interatomic potentials;
+- LAMMPS — large-scale molecular dynamics;
+- AiiDA — workflow automation and provenance;
+- ASE — structure manipulation and analysis;
+- pymatgen — crystallographic analysis and structure generation;
+- Python — data processing, statistical analysis and visualisation.
 
-CP2K provides the initial first-principles workflow while the VASP
-computational environment is established.
+CP2K currently provides the validated first-principles crystalline
+workflow. VASP remains a complementary future cross-check.
 
 ---
 
 ## Initial Defect Scope
 
-The initial defect investigation will focus on:
+The initial defect investigation focuses on:
 
 **oxygen vacancies**
 
 including:
 
-- crystallographically distinct vacancy environments
-- structural relaxation around vacancies
-- vacancy formation energies
-- charge states where appropriate
-- electronic defect states
-- local coordination
-- structural descriptors
-- distributions of defect properties in amorphous IGZO
+- crystallographically distinct vacancy environments;
+- structural relaxation around vacancies;
+- vacancy formation energies;
+- charge states where appropriate;
+- electronic defect states;
+- local coordination;
+- structural descriptors;
+- distributions of defect properties in amorphous IGZO.
+
+The crystalline defect workflow begins from relaxed
+`ordered_003` and will use symmetry reduction plus explicit supercell
+convergence.
 
 ---
 
@@ -97,17 +117,22 @@ including:
 Amorphous structures will initially be generated using CP2K AIMD
 melt-quench simulations.
 
-Multiple independent structures should be generated to avoid conclusions
+The starting cell will be selected to be approximately isotropic where
+practical rather than directly inheriting the elongated shape of the
+crystalline conventional cell.
+
+Multiple independent structures will be generated to avoid conclusions
 being dependent on a single amorphous configuration.
 
-Structural validation will include quantities such as:
+Structural validation will include:
 
-- density
-- radial distribution functions
-- coordination statistics
-- bond-length distributions
-- bond-angle distributions
-- ring statistics where appropriate
+- density;
+- radial distribution functions;
+- coordination statistics;
+- bond-length distributions;
+- bond-angle distributions;
+- local polyhedra;
+- ring statistics where appropriate.
 
 ---
 
@@ -135,14 +160,14 @@ defect species.
 
 Potential future extensions include:
 
-- oxygen interstitials
-- cation vacancies
-- cation antisites
-- hydrogen-related defects
-- different IGZO compositions
-- surfaces
-- interfaces
-- extended defects
+- oxygen interstitials;
+- cation vacancies;
+- cation antisites;
+- hydrogen-related defects;
+- different IGZO compositions;
+- surfaces;
+- interfaces;
+- extended defects.
 
 These should only be introduced once the initial oxygen-vacancy workflow
 has been validated.

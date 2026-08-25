@@ -362,40 +362,195 @@ production SCF settings are finalised.
 
 ---
 
-## CP2K SCF Optimisation — Final Selection
 
-The crystalline IGZO SCF strategy was tested using the converged
-numerical setup:
+## CP2K SCF Optimisation — Local Benchmark and Production Decision
 
-- PBE
-- TZV2P-MOLOPT-PBE-GTH
-- CUTOFF = 700 Ry
-- REL_CUTOFF = 60 Ry
-- 6×6×1 k-point mesh
+The crystalline IGZO SCF strategy was benchmarked locally using the
+converged numerical setup:
 
-### Results
+- PBE;
+- TZV2P-MOLOPT-PBE-GTH;
+- CUTOFF = 700 Ry;
+- REL_CUTOFF = 60 Ry;
+- 6×6×1 k-point mesh.
+
+### Local fixed-geometry benchmark
 
 | Method | SCF iterations | Wall time (s) | Status |
 |---|---:|---:|---|
-| Broyden mixing | 32 | 1240.878 | Converged |
+| Broyden baseline | 32 | 1240.878 | Converged |
 | Pulay mixing | 17 | 700.825 | Converged |
-| Low-alpha Broyden | — | — | Runtime failure |
-| New Pulay mixing | — | — | SIGABRT/SIGBUS runtime failure |
+| Low-alpha Broyden | — | — | Local runtime/WSL failure |
+| New Pulay mixing | — | — | SIGABRT/SIGBUS local runtime failure |
 
-### Decision
+Standard Pulay mixing was the fastest successful fixed-geometry local
+test and converged to essentially the same energy as the Broyden
+baseline.
 
-Standard `PULAY_MIXING` with `ALPHA = 0.20` and `NBUFFER = 8` was
-selected as the production SCF strategy.
+During subsequent local geometry-optimisation development, however,
+Pulay-related conditioning/runtime failures and WSL instability were
+encountered. These failures were treated as environment/workflow
+development issues rather than physical results.
 
-It converged to the same total energy as the Broyden baseline while
-approximately halving the number of SCF iterations and substantially
-reducing wall time.
+### ARCHER2 production decision
 
-The unstable alternative mixing schemes were not pursued further because
-their failures were runtime-level process faults rather than ordinary
-SCF non-convergence.
+The completed ordered-structure geometry optimisations used CP2K 2025.2
+on ARCHER2 with:
+
+- diagonalisation-based SCF;
+- `BROYDEN_MIXING`;
+- `ALPHA = 0.10`;
+- `BETA = 1.5`;
+- `NBUFFER = 4`;
+- `EPS_SCF = 1e-6`;
+- `MAX_SCF = 200`;
+- 300 K Fermi–Dirac smearing;
+- BFGS geometry optimisation.
+
+This robust ARCHER2 setup is the current production geometry-optimisation
+workflow. Final relaxed-structure energies were subsequently recalculated
+using `EPS_SCF = 1e-7`.
 
 ---
+
+## Crystalline IGZO Ordered-Structure Optimisation and Selection
+
+### Status
+
+**Completed.**
+
+### Objective
+
+Identify a low-energy ordered crystalline InGaZnO4 reference structure
+for subsequent defect calculations and comparison with amorphous IGZO.
+
+Four 21-atom ordered models (In3Ga3Zn3O12; three InGaZnO4 formula units)
+were geometry optimised using CP2K 2025.2 on ARCHER2.
+
+### Computational setup
+
+- XC functional: PBE
+- Basis: TZV2P-MOLOPT-PBE-GTH
+- Matching GTH-PBE pseudopotentials
+- CUTOFF: 700 Ry
+- REL_CUTOFF: 60 Ry
+- k-point mesh: 6×6×1
+- Geometry optimiser: BFGS
+- Geometry-optimisation SCF mixing: Broyden
+- Geometry-optimisation EPS_SCF: 1e-6
+- Final single-point EPS_SCF: 1e-7
+- Electronic temperature: 300 K
+- Fixed experimental cell
+- HPC platform: ARCHER2
+
+All four geometry optimisations converged successfully.
+
+### Geometry-optimisation results
+
+| Model | Final GEO_OPT energy (Ha) | Optimisation steps |
+|---|---:|---:|
+| ordered_001 | -767.247980382261 | 24 |
+| ordered_002 | -767.169895002002 | 27 |
+| ordered_003 | -767.248215342702 | 18 |
+| ordered_004 | -767.166206810877 | 24 |
+
+### Tight single-point energy comparison
+
+Final energies were recalculated on the relaxed structures using
+`EPS_SCF = 1e-7`.
+
+| Model | Single-point energy (Ha) | ΔE (meV/f.u.) | Rank |
+|---|---:|---:|---:|
+| ordered_003 | -767.248205609002 | 0.00 | 1 |
+| ordered_001 | -767.247977684509 | 2.07 | 2 |
+| ordered_002 | -767.169898091297 | 710.29 | 3 |
+| ordered_004 | -767.166212503339 | 743.72 | 4 |
+
+The final energy ordering is:
+
+    ordered_003 < ordered_001 << ordered_002 < ordered_004
+
+`ordered_001` and `ordered_003` are near-degenerate, separated by only
+approximately 2.07 meV per InGaZnO4 formula unit. `ordered_002` and
+`ordered_004` are approximately 0.71–0.74 eV/f.u. above the minimum.
+
+### Relaxed structural comparison
+
+The two low-energy structures remain crystallographically distinct:
+
+| Property | ordered_001 | ordered_003 |
+|---|---|---|
+| Space group | P3m1 (156) | R3m (160) |
+| In coordination | 6 | 6 |
+| Ga coordination | 5 | 5 |
+| Zn coordination | 4 | 4 |
+| Mean In–O distance (Å) | 2.194916 | 2.195080 |
+| Mean Ga–O distance (Å) | 1.935413 | 1.935998 |
+| Mean Zn–O distance (Å) | 1.986724 | 1.986415 |
+
+pymatgen StructureMatcher does not identify `ordered_001` and
+`ordered_003` as equivalent.
+
+Despite their different long-range symmetry, their mean first-shell bond
+lengths and coordination numbers are extremely similar.
+
+### Bond-distribution analysis
+
+| Bond | ordered_001 σ (Å) | ordered_003 σ (Å) |
+|---|---:|---:|
+| In–O | 0.002620 | 0.003106 |
+| Ga–O | 0.037624 | 0.039067 |
+| Zn–O | 0.016615 | 0.007362 |
+
+The largest difference occurs in the ZnO4 environments.
+`ordered_003` has a substantially narrower Zn–O bond-length
+distribution.
+
+### Polyhedral distortion analysis
+
+Both structures retain:
+
+- InO6 octahedral coordination;
+- GaO5 trigonal-bipyramidal coordination under the current angular
+  classifier;
+- ZnO4 tetrahedral coordination.
+
+Average bond-length distortion indices:
+
+| Polyhedron | ordered_001 | ordered_003 |
+|---|---:|---:|
+| InO6 | 0.000707 | 0.001414 |
+| GaO5 | 0.019031 | 0.019356 |
+| ZnO4 | 0.007234 | 0.003208 |
+
+Average angular RMS deviations:
+
+| Polyhedron | ordered_001 (deg) | ordered_003 (deg) |
+|---|---:|---:|
+| InO6 | 6.6578 | 6.6509 |
+| GaO5 | 0.2665 | 0.4342 |
+| ZnO4 | 2.0054 | 2.5071 |
+
+`ordered_003` cannot simply be described as less distorted overall.
+Instead, the two orderings distribute local distortions differently.
+
+The three symmetry-related In, Ga and Zn environments in `ordered_003`
+are nearly identical, consistent with retained R3m symmetry.
+
+### Crystalline reference selection
+
+`ordered_003` is selected as the primary crystalline reference because:
+
+1. it has the lowest tight single-point energy;
+2. its energetic ordering relative to `ordered_001` is retained after
+   tightening EPS_SCF from 1e-6 to 1e-7;
+3. it retains R3m symmetry after relaxation; and
+4. it exhibits highly uniform symmetry-related cation environments.
+
+`ordered_001` is retained as a low-energy competing ordering.
+
+---
+
 ## Current Computational Status
 
 - [x] Experimental CIF obtained
@@ -405,17 +560,27 @@ SCF non-convergence.
 - [x] Four symmetry-distinct configuration classes identified
 - [x] Ordered structure files generated
 - [x] Structures independently validated
-- [ ] CP2K convergence completed
-- [ ] Ordered structures relaxed
-- [ ] Relative energies calculated
-- [ ] Crystalline reference selected
+- [x] CP2K basis/grid/k-point convergence completed for the current crystalline study
+- [x] All ordered structures relaxed
+- [x] Tight relative energies calculated
+- [x] Low-energy structures structurally characterised
+- [x] Primary crystalline reference selected
+- [ ] Pristine crystalline DOS/PDOS/band analysis completed
+- [ ] Symmetry-inequivalent oxygen sites enumerated
+- [ ] Defect supercell convergence completed
+- [ ] Crystalline oxygen-vacancy calculations completed
+- [ ] Amorphous IGZO generated
+- [ ] MACE dataset/model completed
+- [ ] LAMMPS large-scale sampling completed
 
 ---
 
-# Scientific Results
+## Next Scientific Step
 
-No production DFT, defect, AIMD, MACE or LAMMPS results have yet been
-recorded.
+Enumerate symmetry-inequivalent oxygen sites in
+`igzo_crystal_ordered_003_relaxed`, record their multiplicities and local
+cation environments, and generate the initial crystalline
+oxygen-vacancy structures.
 
-Future validated results should be added chronologically below this
-section.
+Defect supercell size and k-point sampling must then be validated before
+production vacancy energetics are interpreted.

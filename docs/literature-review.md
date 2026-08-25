@@ -152,3 +152,23 @@ Place the project within literature on:
 - [ ] Review experimental amorphous structure
 - [ ] Review MACE/ML potentials for oxides
 - [ ] Build structured literature database
+
+---
+
+## Project-Derived Context for Future Literature Comparison
+
+The current project calculations have selected a relaxed R3m
+`ordered_003` model as the primary crystalline computational reference,
+with P3m1 `ordered_001` retained as a near-degenerate alternative.
+
+This is a project-derived result, not a literature claim. Future
+literature review should specifically assess whether published
+first-principles or diffraction studies report:
+
+- competing R3m/P3m1 cation-ordering descriptions;
+- relative stability of explicit Ga/Zn orderings;
+- InO6, GaO5 and ZnO4 coordination environments;
+- five-coordinate Ga trigonal-bipyramidal environments; and
+- sensitivity of oxygen-vacancy energetics to local cation ordering.
+
+These comparisons should be added only when supported by cited sources.

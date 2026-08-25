@@ -11,30 +11,30 @@ the IGZO defect-modelling project.
           ↓
     experimental CIF
           ↓
-    ordering script
+    generate_igzo_orderings.py
           ↓
-    ordered crystalline model
+    four ordered crystalline models
           ↓
-    DFT relaxation
+    converged CP2K relaxation + tight energies
           ↓
-    crystalline reference
-       ┌──┴───────────────┐
-       ↓                  ↓
-    defects             AIMD
-                          ↓
-                    amorphous IGZO
-                          ↓
-                     DFT dataset
-                          ↓
-                        MACE
-                          ↓
-                       LAMMPS
-                          ↓
-                sampled configurations
-                          ↓
-                  defect calculations
-                          ↓
-                     analysis
+    igzo_crystal_ordered_003_relaxed
+       ┌──────────────┴──────────────┐
+       ↓                             ↓
+    crystalline defects          CP2K AIMD
+                                     ↓
+                                amorphous IGZO
+                                     ↓
+                                  DFT dataset
+                                     ↓
+                                    MACE
+                                     ↓
+                                   LAMMPS
+                                     ↓
+                              sampled configurations
+                                     ↓
+                                defect statistics
+                                     ↓
+                                   analysis
 
 ---
 
@@ -42,14 +42,22 @@ the IGZO defect-modelling project.
 
 External structures should:
 
-- remain unmodified
-- retain database identifiers
-- retain publication provenance
-- remain separate from derived structures
+- remain unmodified;
+- retain database identifiers;
+- retain publication provenance;
+- remain separate from derived structures.
 
-Current reference:
+Current experimental reference:
 
     COD 1521670
+
+Current primary derived crystalline reference:
+
+    igzo_crystal_ordered_003_relaxed
+
+Secondary low-energy ordering:
+
+    igzo_crystal_ordered_001_relaxed
 
 ---
 
@@ -57,13 +65,15 @@ Current reference:
 
 Derived structures should record:
 
-- structure ID
-- parent structure
-- generation method
-- generation script
-- software/version
-- ordering identifier where appropriate
-- composition
+- structure ID;
+- parent structure;
+- generation method;
+- generation script;
+- software/version;
+- ordering identifier where appropriate;
+- composition;
+- relaxation parent where appropriate;
+- reference/secondary status where appropriate.
 
 Programmatic generation is preferred to manual editing.
 
@@ -73,15 +83,36 @@ Programmatic generation is preferred to manual editing.
 
 Production calculations should record:
 
-- calculation ID
-- structure ID
-- software
-- software version
-- computational parameters
-- basis sets / pseudopotentials
-- parent calculation
-- HPC environment
-- status
+- calculation ID;
+- structure ID;
+- software;
+- software version;
+- computational parameters;
+- basis sets/pseudopotentials;
+- parent calculation;
+- restart parent if used;
+- HPC environment;
+- scheduler job ID;
+- status;
+- final energy where appropriate.
+
+---
+
+## Current CP2K Environments
+
+Initial local convergence work:
+
+    CP2K 2026.2
+    WSL2 / local Linux environment
+
+Production ordered-structure calculations:
+
+    CP2K 2025.2
+    ARCHER2
+
+The data-file family/version used by each calculation should be recorded
+because local CP2K 2026.2 and ARCHER2 CP2K 2025.2 use differently named
+UZH basis/potential data files.
 
 ---
 
@@ -89,11 +120,11 @@ Production calculations should record:
 
 Record random seeds where applicable for:
 
-- AIMD initial velocities
-- stochastic thermostats
-- MACE dataset splitting
-- MACE training
-- structural sampling
+- AIMD initial velocities;
+- stochastic thermostats;
+- MACE dataset splitting;
+- MACE training;
+- structural sampling.
 
 ---
 
@@ -101,17 +132,17 @@ Record random seeds where applicable for:
 
 Version important dependencies including:
 
-- CP2K
-- VASP
-- ASE
-- pymatgen
-- NumPy
-- pandas
-- SciPy
-- matplotlib
-- MACE
-- LAMMPS
-- AiiDA
+- CP2K;
+- VASP;
+- ASE;
+- pymatgen;
+- NumPy;
+- pandas;
+- SciPy;
+- matplotlib;
+- MACE;
+- LAMMPS;
+- AiiDA.
 
 ---
 
@@ -119,16 +150,16 @@ Version important dependencies including:
 
 Record where appropriate:
 
-- machine
-- partition/queue
-- nodes
-- CPU cores
-- GPUs
-- memory
-- walltime
-- modules/environment
-- scheduler
-- job ID
+- machine;
+- partition/queue;
+- nodes;
+- CPU cores;
+- GPUs;
+- memory;
+- walltime;
+- loaded modules/environment;
+- scheduler;
+- job ID.
 
 Job IDs should not be embedded in permanent structure names.
 
@@ -138,14 +169,15 @@ Job IDs should not be embedded in permanent structure names.
 
 Git should track:
 
-- source code
-- workflow definitions
-- templates
-- documentation
-- metadata
-- reference structures
-- selected results
-- analysis scripts
+- source code;
+- workflow definitions;
+- templates;
+- documentation;
+- metadata;
+- reference structures;
+- selected relaxed structures;
+- selected small results;
+- analysis scripts.
 
 Git should not serve as bulk simulation storage.
 
@@ -157,13 +189,14 @@ Keep large files on appropriate HPC or research storage.
 
 Examples:
 
-- AIMD trajectories
-- wavefunction files
-- restart files
-- large DFT outputs
-- MACE datasets
-- intermediate checkpoints
-- LAMMPS trajectories
+- AIMD trajectories;
+- CP2K `*.kp` wavefunction restart files;
+- wavefunction files;
+- restart histories;
+- large DFT outputs;
+- MACE datasets;
+- intermediate checkpoints;
+- LAMMPS trajectories.
 
 Curated datasets may later be archived separately with persistent
 identifiers.
@@ -174,17 +207,39 @@ identifiers.
 
 AiiDA should progressively provide:
 
-- calculation provenance
-- parent-child relationships
-- workflow automation
-- metadata persistence
-- high-throughput defect calculations
+- calculation provenance;
+- parent-child relationships;
+- workflow automation;
+- metadata persistence;
+- high-throughput defect calculations.
 
 AiiDA should complement Git rather than replace it.
 
 ---
 
-## Reproducing a Result
+## Reproducing the Current Crystalline Reference
+
+The crystalline reference selection should be reproducible from:
+
+    COD 1521670
+       +
+    generate_igzo_orderings.py
+       +
+    four ordered structure files
+       +
+    CP2K convergence parameters
+       +
+    ARCHER2 geometry-optimisation inputs
+       +
+    tight EPS_SCF = 1e-7 single points
+       +
+    relaxed-structure analysis scripts
+       +
+    docs/results-log.md
+
+---
+
+## Reproducing a Future Result
 
 A significant result should ideally be reproducible from:
 
