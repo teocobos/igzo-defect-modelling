@@ -29,6 +29,39 @@ Primary output:
 
 ---
 
+### Crystalline reference validation — COMPLETE
+
+- [x] Enumerate ordered crystalline IGZO models
+- [x] Perform basis-set convergence
+- [x] Perform plane-wave cutoff convergence
+- [x] Perform relative-cutoff convergence
+- [x] Perform k-point convergence
+- [x] Relax all ordered structures
+- [x] Compare ordered-structure energies
+- [x] Perform CELL_OPT on low-energy candidates
+- [x] Validate `ordered_003` R3m symmetry
+- [x] Compare unconstrained P1 and constrained R3m minima
+- [x] Select canonical crystalline reference
+- [x] Enumerate symmetry-inequivalent oxygen sites
+
+Canonical reference:
+
+`igzo_crystal_ordered_003_r3m_cell_relaxed`
+
+### Next: crystalline oxygen vacancies
+
+- [ ] Define candidate crystalline defect supercells
+- [ ] Perform supercell convergence assessment
+- [ ] Map O001-O004 onto the selected supercell
+- [ ] Generate neutral oxygen-vacancy structures
+- [ ] Relax neutral vacancies
+- [ ] Compare vacancy formation energies
+- [ ] Extend selected vacancies to charged states
+- [ ] Determine finite-size correction strategy
+- [ ] Calculate defect electronic structure and charge-transition levels
+
+---
+
 ## Milestone 2 — Crystalline Electronic Structure
 
 - [x] Relax selected reference

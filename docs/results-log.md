@@ -551,6 +551,124 @@ are nearly identical, consistent with retained R3m symmetry.
 
 ---
 
+## Fully Relaxed Crystalline Reference Selection
+
+Cell optimisation was subsequently performed for the two low-energy
+ordered structures, ordered_001 and ordered_003, using CP2K 2025.2 on
+ARCHER2.
+
+Both calculations used:
+
+- PBE
+- TZV2P-MOLOPT-PBE-GTH
+- CUTOFF = 700 Ry
+- REL_CUTOFF = 60 Ry
+- 6 x 6 x 1 Monkhorst-Pack k-point sampling
+- BFGS cell optimisation
+- analytical stress tensor
+- hexagonal cell symmetry
+- zero external pressure
+- pressure tolerance = 100 bar
+- EPS_SCF = 1e-6 during CELL_OPT
+
+Final cell parameters were:
+
+| Model | a = b (A) | c (A) | Volume (A^3) | Final pressure (bar) |
+|---|---:|---:|---:|---:|
+| ordered_001 | 3.369483 | 26.210476 | 257.710482 | -1.50 |
+| ordered_003 | 3.371432 | 26.171440 | 257.624398 | 96.31 |
+
+Final tight single-point energies were recalculated using
+EPS_SCF = 1e-7:
+
+| Model | Energy (Ha) | Delta E (meV/f.u.) |
+|---|---:|---:|
+| ordered_003 | -767.259393316824 | 0.00 |
+| ordered_001 | -767.259021707076 | 3.37 |
+
+Full cell relaxation therefore preserves and slightly strengthens the
+energetic preference for ordered_003.
+
+The final primary crystalline computational reference is:
+
+`igzo_crystal_ordered_003_cell_relaxed`
+
+The P3m1 ordered_001 structure remains a near-degenerate secondary
+ordering.
+
+---
+
+## 2026-08-28 — Crystalline R3m reference finalised
+
+The crystalline reference selection and symmetry validation workflow
+has been completed.
+
+### Final structure
+
+The canonical crystalline structure is:
+
+`igzo_crystal_ordered_003_r3m_cell_relaxed`
+
+Space group:
+
+- R3m (160)
+
+Final lattice:
+
+- a = b = 3.3715680721 Å
+- c = 26.1742696350 Å
+- gamma = 60°
+- volume = 257.673091903 Å³
+
+Final R3m CELL_OPT pressure:
+
+- -69.7746 bar
+
+### Final tight energies
+
+Unconstrained cell-relaxed structure:
+
+- `E(P1) = -767.259393316824116 Ha`
+
+R3m-constrained cell-relaxed structure:
+
+- `E(R3m) = -767.259392342909337 Ha`
+
+Energy difference:
+
+- `E(R3m) - E(P1) ≈ 0.0265 meV/cell`
+- `≈ 0.0088 meV/f.u.`
+
+This difference is negligible. The apparent P1 distortion is therefore
+not treated as evidence for a distinct lower-energy crystalline phase.
+
+The R3m structure is adopted as the crystalline reference because it
+retains the physically meaningful crystallographic symmetry while
+remaining energetically indistinguishable from the unconstrained
+minimum.
+
+### Symmetry-equivalent oxygen sites
+
+The 12 oxygen atoms reduce to four inequivalent sites:
+
+| Site | Equivalent atoms | Multiplicity | Wyckoff | Environment |
+| --- | --- | ---: | --- | --- |
+| O001 | 9, 10, 11 | 3 | 3a | Ga3Zn1 |
+| O002 | 12, 13, 14 | 3 | 3a | In3Zn1 |
+| O003 | 15, 16, 17 | 3 | 3a | In3Ga1 |
+| O004 | 18, 19, 20 | 3 | 3a | Ga1Zn3 |
+
+This completes pristine crystalline reference validation.
+
+Next stage:
+
+1. select and converge the crystalline defect supercell;
+2. map O001–O004 into the supercell;
+3. generate representative oxygen-vacancy structures;
+4. begin neutral vacancy relaxation calculations.
+
+---
+
 ## Current Computational Status
 
 - [x] Experimental CIF obtained
@@ -566,7 +684,7 @@ are nearly identical, consistent with retained R3m symmetry.
 - [x] Low-energy structures structurally characterised
 - [x] Primary crystalline reference selected
 - [ ] Pristine crystalline DOS/PDOS/band analysis completed
-- [ ] Symmetry-inequivalent oxygen sites enumerated
+- [X] Symmetry-inequivalent oxygen sites enumerated
 - [ ] Defect supercell convergence completed
 - [ ] Crystalline oxygen-vacancy calculations completed
 - [ ] Amorphous IGZO generated

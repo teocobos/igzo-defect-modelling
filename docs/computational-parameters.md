@@ -179,6 +179,72 @@ performed on each relaxed structure before energetic ranking.
 
 ---
 
+## Final crystalline reference optimisation
+
+The primary crystalline IGZO reference is the ordered `ordered_003`
+configuration derived from COD 1521670.
+
+The final crystalline structure was obtained using CP2K with:
+
+- Method: Quickstep / GPW
+- Exchange-correlation functional: PBE
+- Basis set:
+  - In: `TZV2P-MOLOPT-PBE-GTH-q13`
+  - Ga: `TZV2P-MOLOPT-PBE-GTH-q13`
+  - Zn: `TZV2P-MOLOPT-PBE-GTH-q12`
+  - O: `TZV2P-MOLOPT-PBE-GTH-q6`
+- Pseudopotentials: matching GTH-PBE potentials
+- Plane-wave cutoff: 700 Ry
+- Relative cutoff: 60 Ry
+- k-point mesh: 6 × 6 × 1
+- SCF mixing: Broyden
+- Electronic temperature: 300 K Fermi-Dirac smearing
+- Added molecular orbitals: 40
+- Geometry/cell optimiser: BFGS
+- Final tight single-point SCF threshold: `EPS_SCF = 1.0E-7`
+
+### Symmetry-constrained cell optimisation
+
+A final CELL_OPT calculation was performed for `ordered_003` while
+preserving the R3m space group using `KEEP_SPACE_GROUP TRUE`.
+
+The converged lattice parameters were:
+
+- a = b = 3.3715680721 Å
+- c = 26.1742696350 Å
+- alpha = beta = 90°
+- gamma = 60°
+- volume = 257.673091903 Å³
+
+The 60° gamma convention is the CP2K hexagonal representation of the
+rhombohedral/hexagonal lattice.
+
+The final internal pressure was:
+
+- -69.7746 bar
+
+which satisfied the specified pressure tolerance of 100 bar.
+
+### Final reference energy
+
+The final tight single-point energy of the R3m-constrained structure was:
+
+- `E(R3m) = -767.259392342909337 Ha`
+
+The corresponding unconstrained cell-relaxed structure had:
+
+- `E(P1) = -767.259393316824116 Ha`
+
+The difference is approximately:
+
+- 0.0265 meV per 21-atom cell
+- 0.0088 meV per formula unit
+
+The two structures are therefore effectively energetically degenerate
+at the precision relevant to the present workflow.
+
+---
+
 # CP2K AIMD
 
 | Parameter | Value |

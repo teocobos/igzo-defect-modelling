@@ -108,6 +108,45 @@ Secondary low-energy ordering:
 
 ---
 
+## Crystalline symmetry validation
+
+The final `ordered_003` crystalline structure was tested for sensitivity
+to the symmetry tolerance used by pymatgen/spglib.
+
+The R3m-constrained final geometry was classified as:
+
+| symprec / Å | Space group |
+| ---: | --- |
+| 1.0E-5 | P1 |
+| 5.0E-5 | P1 |
+| 1.0E-4 | P1 |
+| 5.0E-4 | P1 |
+| 1.0E-3 | P1 |
+| 2.0E-3 | R3m |
+| 5.0E-3 | R3m |
+| 1.0E-2 | R3m |
+
+The deviations from exact special positions are therefore of order
+10^-3 Å.
+
+A production tolerance of `2.0E-3 Å` is used for symmetry-based site
+enumeration. This remains very small compared with typical metal-oxygen
+bond lengths of approximately 2 Å.
+
+Additional validation was obtained from a direct energetic comparison
+between:
+
+1. an unconstrained P1 cell-relaxed structure; and
+2. an explicitly R3m-constrained cell-relaxed structure.
+
+The energy difference was only approximately 0.009 meV per formula
+unit.
+
+The R3m assignment is therefore considered robust for defect-site
+classification.
+
+---
+
 ## 5. Crystalline Electronic Structure
 
 Before treating electronic-structure results as validated:

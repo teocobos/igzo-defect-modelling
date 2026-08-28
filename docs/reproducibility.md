@@ -98,6 +98,38 @@ Production calculations should record:
 
 ---
 
+## Canonical crystalline structure provenance
+
+The final crystalline reference is generated directly from the
+high-precision CP2K CELL_OPT restart coordinates using:
+
+`scripts/structure_generation/extract_cp2k_r3m_reference.py`
+
+The generated canonical files are:
+
+- `structures/crystalline/cell_relaxed/igzo_crystal_ordered_003_r3m_cell_relaxed/igzo_crystal_ordered_003_r3m_cell_relaxed.xyz`
+- `structures/crystalline/cell_relaxed/igzo_crystal_ordered_003_r3m_cell_relaxed/igzo_crystal_ordered_003_r3m_cell_relaxed.cif`
+
+The CP2K restart file itself is not intended for version control because
+restart and wavefunction files may be large and are machine/run-state
+artifacts.
+
+The canonical CIF is written using a symmetry tolerance of
+`2.0E-3 Å`, which recovers R3m (160) for the final DFT-relaxed
+structure.
+
+Symmetry-inequivalent oxygen sites are generated using:
+
+`scripts/structure_generation/enumerate_oxygen_sites.py`
+
+with:
+
+- `SYMPREC = 2.0E-3`
+- `ANGLE_TOLERANCE = 5.0`
+- `NEIGHBOR_CUTOFF = 2.7 Å`
+
+---
+
 ## Current CP2K Environments
 
 Initial local convergence work:

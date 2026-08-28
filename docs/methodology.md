@@ -144,6 +144,76 @@ is not less distorted in every metric.
 
 ---
 
+## Crystalline reference selection
+
+Four symmetry-distinct ordered models were generated from the
+experimentally disordered InGaZnO4 structure.
+
+Following fixed-cell structural relaxation and tight single-point
+energy calculations, `ordered_003` and `ordered_001` were identified as
+the two low-energy configurations.
+
+After full cell relaxation, `ordered_003` remained the lowest-energy
+ordered structure and was selected for further validation.
+
+### Symmetry validation
+
+An unconstrained atomic CELL_OPT calculation preserved the hexagonal
+cell metric but relaxed to a numerically lower-symmetry P1 structure.
+
+To determine whether this represented a physically meaningful symmetry
+lowering, a second CELL_OPT calculation was performed from the R3m
+reference structure using:
+
+- `KEEP_SYMMETRY TRUE`
+- `KEEP_SPACE_GROUP TRUE`
+- `KEEP_ANGLES TRUE`
+
+The resulting R3m-constrained structure was energetically degenerate
+with the unconstrained P1 structure to within approximately
+0.009 meV per formula unit.
+
+The small P1 distortion is therefore treated as a shallow numerical
+symmetry-breaking relaxation rather than evidence for a distinct
+lower-symmetry crystalline phase.
+
+The R3m-constrained `ordered_003` structure is consequently used as the
+canonical crystalline IGZO reference for defect modelling.
+
+## Oxygen-site enumeration
+
+Symmetry analysis of the final R3m structure was performed using
+pymatgen/spglib.
+
+A symmetry tolerance of:
+
+- `symprec = 2.0E-3 Å`
+- `angle_tolerance = 5°`
+
+was used for production site enumeration.
+
+The final structure is identified as:
+
+- Space group: R3m
+- International number: 160
+
+The 12 oxygen atoms reduce to four symmetry-inequivalent oxygen sites,
+each with multiplicity 3.
+
+The four oxygen environments are:
+
+| Site | Wyckoff | Multiplicity | Local cation environment |
+| --- | --- | ---: | --- |
+| O001 | 3a | 3 | Ga3Zn1 |
+| O002 | 3a | 3 | In3Zn1 |
+| O003 | 3a | 3 | In3Ga1 |
+| O004 | 3a | 3 | Ga1Zn3 |
+
+These four sites define the starting set for subsequent crystalline
+oxygen-vacancy calculations.
+
+---
+
 ## 6. VASP
 
 VASP remains a complementary first-principles workflow once the required
