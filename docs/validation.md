@@ -367,15 +367,9 @@ The 3×3×1 2×2×1 calculation is retained as a k-point-sensitivity benchmark r
 
 ---
 
-## 9. Production Neutral Oxygen Vacancies
+## 9. Production Neutral Oxygen-Vacancy Dataset
 
-Production neutral vacancy structures contain:
-
-```text
-335 atoms
-```
-
-and are generated for:
+The production neutral oxygen-vacancy dataset contains four symmetry-inequivalent configurations:
 
 ```text
 O001
@@ -384,7 +378,13 @@ O003
 O004
 ```
 
-using the 4×4×1 R3m-derived supercell.
+Each defective production cell contains:
+
+```text
+335 atoms
+```
+
+and is derived from the 336-atom 4×4×1 R3m pristine supercell.
 
 The exact production cell is:
 
@@ -396,17 +396,113 @@ C   0.000000000000   0.000000000000  26.174269630000
 
 with periodicity in XYZ.
 
-O001 has completed the production workflow.
+All four fixed-cell Γ+OT PBE geometry optimisations and tight final static calculations have completed successfully.
 
-O002–O004 have completed their production calculations and await consolidated energetic and structural analysis.
+### 9.1 Tight final energies
 
-**Status:** PRODUCTION CALCULATIONS COMPLETE; DATASET ANALYSIS IN PROGRESS.
+| Site | Environment | Tight static energy / Ha | Relative energy / eV |
+| ---- | ----------- | -----------------------: | -------------------: |
+| O004 | Ga1Zn3      |      -12260.070245473984 |             0.000000 |
+| O003 | In3Ga1      |      -12260.066175247555 |            +0.110757 |
+| O002 | In3Zn1      |      -12260.051235718196 |            +0.517282 |
+| O001 | Ga3Zn1      |      -12260.034628938620 |            +0.969175 |
+
+Final ordering:
+
+```text
+O004 < O003 < O002 < O001
+```
+
+The energetic ranking is robust to the final tighter SCF calculation because the differences between final GEO_OPT and tight static energies are negligible compared with the energy separation among sites.
+
+### 9.2 First-shell reconstruction
+
+Representative radial reconstruction:
+
+| Site | Local environment | Principal cation response                | Oxygen response   |
+| ---- | ----------------- | ---------------------------------------- | ----------------- |
+| O001 | Ga3Zn1            | Ga outward ~0.224 Å; Zn outward ~0.064 Å | O inward ~0.156 Å |
+| O002 | In3Zn1            | In outward ~0.190 Å; Zn outward ~0.322 Å | O inward ~0.105 Å |
+| O003 | In3Ga1            | In outward ~0.167 Å; Ga outward ~0.358 Å | O inward ~0.164 Å |
+| O004 | Ga1Zn3            | Ga outward ~0.301 Å; Zn outward ~0.387 Å | O inward ~0.251 Å |
+
+Maximum first-shell displacements:
+
+```text
+O001: 0.223948 Å
+O002: 0.321838 Å
+O003: 0.358132 Å
+O004: 0.389473 Å
+```
+
+The lowest-energy O004 configuration therefore exhibits the largest maximum first-shell reconstruction in the current PBE dataset.
+
+O003 also undergoes a pronounced reconstruction.
+
+This correlation does not by itself demonstrate that structural relaxation is the cause of the energetic ordering.
+
+A future decomposition using unrelaxed and relaxed vacancy energies would be required to quantify lattice-relaxation stabilisation directly.
+
+### 9.3 Relaxation localisation
+
+At a radius of 6 Å:
+
+| Site | Maximum displacement outside 6 Å / Å | Mean displacement outside 6 Å / Å |
+| ---- | -----------------------------------: | --------------------------------: |
+| O001 |                             0.018212 |                          0.004549 |
+| O002 |                             0.050448 |                          0.005712 |
+| O003 |                             0.061460 |                          0.006654 |
+| O004 |                             0.057760 |                          0.007111 |
+
+Mean displacements beyond 6 Å remain below approximately 0.008 Å for all four configurations.
+
+The large first-shell distortions therefore remain predominantly local rather than generating a substantial long-range displacement field across the supercell.
+
+### 9.4 Dataset reproducibility
+
+Processed results are consolidated under:
+
+```text
+results/crystalline/oxygen_vacancies/pbe/
+```
+
+including:
+
+```text
+vacancy_tight_energies.csv
+vacancy_energy_summary.csv
+vacancy_first_shell_summary.csv
+vacancy_structural_summary.csv
+vacancy_localisation_summary.csv
+```
+
+Curated relaxed structures are stored under:
+
+```text
+results/crystalline/oxygen_vacancies/pbe/relaxed_structures/
+```
+
+Comparison figures are stored under:
+
+```text
+results/crystalline/oxygen_vacancies/pbe/figures/
+```
+
+The consolidated dataset is generated using:
+
+```text
+scripts/analysis/build_pbe_vacancy_dataset.py
+```
+
+**Status:** PASSED — PBE NEUTRAL OXYGEN-VACANCY DATASET COMPLETE.
 
 ---
 
 ## 10. PBE0-TC-LRC Validation
 
 PBE0-TC-LRC will not be applied directly to large defect supercells without prior pristine validation.
+
+The initial validation target is the canonical 21-atom pristine R3m crystalline reference.
 
 Planned sequence:
 
@@ -415,12 +511,16 @@ PBE R3m reference
         ↓
 pristine PBE0-TC-LRC single-point validation
         ↓
+validate hybrid methodology
+        ↓
 PBE0-TC-LRC R3m CELL_OPT
         ↓
 tight pristine hybrid reference
         ↓
 hybrid defect calculations
 ```
+
+The pristine single-point calculation precedes the hybrid CELL_OPT so that the electronic methodology can be validated before structural optimisation.
 
 The PBE0-TC-LRC CELL_OPT will be performed on the 21-atom pristine R3m reference.
 
@@ -431,13 +531,18 @@ Validation will include:
 * SCF stability;
 * exact-exchange settings;
 * truncated-Coulomb/LRC parameters;
+* auxiliary-basis/ADMM strategy where appropriate;
+* basis-set compatibility;
+* hybrid k-point strategy;
 * band gap;
 * band-edge character;
 * structural parameters;
 * comparison with available literature;
 * defect-electron localisation behaviour.
 
-**Status:** NEXT MAJOR VALIDATION STAGE.
+No PBE0-TC-LRC production parameter set will be considered validated until these checks are complete.
+
+**Status:** CURRENT ACTIVE VALIDATION STAGE.
 
 ---
 
@@ -452,11 +557,31 @@ Before electronic-structure results are treated as validated:
 * compare with available literature;
 * cross-check selected results with VASP where appropriate.
 
+**Status:** PENDING HYBRID VALIDATION.
+
+---
+
+## 12. Hybrid Neutral Oxygen Vacancies
+
+After pristine hybrid validation:
+
+* generate supercells from the hybrid-optimised pristine reference;
+* perform PBE0-TC-LRC single points on selected PBE-relaxed vacancies;
+* assess electronic localisation;
+* test relevant spin states;
+* perform fixed-cell hybrid GEO_OPT;
+* calculate PDOS;
+* analyse defect levels;
+* analyse charge and spin density;
+* compare PBE and PBE0-TC-LRC geometries and energetic ordering.
+
+The initial hybrid calculations may prioritise PBE-identified configurations while retaining sufficient coverage to determine whether the energetic ordering changes at hybrid level.
+
 **Status:** PENDING.
 
 ---
 
-## 12. Charged Oxygen Vacancies
+## 13. Charged Oxygen Vacancies
 
 After hybrid validation:
 
@@ -485,7 +610,7 @@ Chemical-potential limits must be constrained by relevant competing phases rathe
 
 ---
 
-## 13. Amorphous Structures
+## 14. Amorphous Structures
 
 A completed melt-quench trajectory is not sufficient validation.
 
@@ -506,7 +631,7 @@ Validation will include:
 
 ---
 
-## 14. MACE
+## 15. MACE
 
 Validate numerically using:
 
@@ -529,7 +654,7 @@ Validate physically using:
 
 ---
 
-## 15. LAMMPS
+## 16. LAMMPS
 
 Before production:
 

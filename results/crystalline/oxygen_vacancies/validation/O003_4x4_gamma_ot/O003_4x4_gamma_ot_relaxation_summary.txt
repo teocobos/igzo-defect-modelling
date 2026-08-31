@@ -1,0 +1,22 @@
+IGZO oxygen-vacancy relaxation analysis
+============================================================
+
+Label: O003_4x4_gamma_ot
+Supercell: 4x4x1
+Pristine atoms: 336
+Defect atoms: 335
+
+Missing oxygen pristine index: 277
+Vacancy fractional coordinates: 0.3333333333 0.4166666700 0.3770441200
+
+First-shell reconstruction by element:
+  Ga: N=1, <r_initial>=1.982168 Å, <r_final>=2.340300 Å, <delta_r>=+0.358132 Å (away from vacancy), <disp>=0.358132 Å, max_disp=0.358132 Å
+  In: N=3, <r_initial>=2.231800 Å, <r_final>=2.398497 Å, <delta_r>=+0.166696 Å (away from vacancy), <disp>=0.167643 Å, max_disp=0.167654 Å
+  O : N=6, <r_initial>=2.854694 Å, <r_final>=2.691005 Å, <delta_r>=-0.163690 Å (toward vacancy), <disp>=0.165662 Å, max_disp=0.220221 Å
+
+Relaxation localisation:
+  outside 3.0 Å: max=0.213112 Å, mean=0.012203 Å
+  outside 4.0 Å: max=0.132747 Å, mean=0.011065 Å
+  outside 5.0 Å: max=0.061460 Å, mean=0.009018 Å
+  outside 6.0 Å: max=0.061460 Å, mean=0.006654 Å
+  outside 7.0 Å: max=0.057139 Å, mean=0.005794 Å

@@ -33,7 +33,7 @@ Six mixed positions require three Ga and three Zn atoms.
 C(6,3) = 20
 ```
 
-raw assignments reduce to four symmetry-distinct ordered configurations.
+These raw assignments reduce to four symmetry-distinct ordered configurations.
 
 ---
 
@@ -640,6 +640,12 @@ REL_CUTOFF = 60 Ry
 fixed-cell BFGS GEO_OPT
 ```
 
+Final defect energies are obtained from tight static calculations using:
+
+```text
+EPS_SCF = 1E-7
+```
+
 This choice balances:
 
 * defect localisation;
@@ -650,27 +656,253 @@ This choice balances:
 
 ---
 
-# 21. O002–O004 Production Calculations
+# 21. PBE Neutral Oxygen-Vacancy Dataset
 
-Neutral 4×4×1 Γ+OT PBE GEO_OPT calculations have completed for:
+**Status:** Completed.
+
+Neutral 4×4×1 Γ+OT PBE geometry optimisations and tight final static-energy calculations have been completed for all four symmetry-inequivalent oxygen-vacancy sites:
 
 ```text
+O001
 O002
 O003
 O004
 ```
 
-Together with O001, all four symmetry-distinct neutral oxygen-vacancy production calculations are now complete.
+The production calculations use the 336-atom pristine cell and corresponding 335-atom neutral oxygen-vacancy cells.
 
-Their final energies and structural reconstructions will be consolidated in the next analysis stage.
+## 21.1 Tight final energies
 
-No relative energetic ranking is recorded here until the completed outputs have been processed consistently.
+| Site | Local environment | Tight static energy / Ha | Relative energy / eV |
+| ---- | ----------------- | -----------------------: | -------------------: |
+| O004 | Ga1Zn3            |      -12260.070245473984 |             0.000000 |
+| O003 | In3Ga1            |      -12260.066175247555 |            +0.110757 |
+| O002 | In3Zn1            |      -12260.051235718196 |            +0.517282 |
+| O001 | Ga3Zn1            |      -12260.034628938620 |            +0.969175 |
+
+The final PBE energetic ordering is:
+
+```text
+O004 < O003 < O002 < O001
+```
+
+O004 is therefore the lowest-energy neutral oxygen-vacancy configuration within the validated PBE screening dataset.
+
+The tight static corrections relative to the converged final GEO_OPT energies are extremely small and do not alter the ordering.
 
 ---
 
-# 22. Next Methodological Stage
+## 21.2 O002 structural reconstruction
 
-The next high-level electronic-structure methodology is PBE0-TC-LRC.
+O002 has the local cation environment:
+
+```text
+In3Zn1
+```
+
+First-shell reconstruction:
+
+| Element | Count | Initial distance / Å | Final distance / Å | Mean radial change / Å |
+| ------- | ----: | -------------------: | -----------------: | ---------------------: |
+| In      |     3 |             2.225113 |           2.415355 |              +0.190242 |
+| Zn      |     1 |             2.002239 |           2.324077 |              +0.321838 |
+| O       |     3 |             2.914868 |           2.809492 |              -0.105376 |
+
+The Zn neighbour exhibits the largest first-shell displacement:
+
+```text
+0.321838 Å
+```
+
+The three In neighbours also move outward from the vacancy, while the nearby oxygen atoms relax inward.
+
+Relaxation outside 6 Å:
+
+```text
+maximum displacement = 0.050448 Å
+mean displacement    = 0.005712 Å
+```
+
+---
+
+## 21.3 O003 structural reconstruction
+
+O003 has the local cation environment:
+
+```text
+In3Ga1
+```
+
+First-shell reconstruction:
+
+| Element | Count | Initial distance / Å | Final distance / Å | Mean radial change / Å |
+| ------- | ----: | -------------------: | -----------------: | ---------------------: |
+| Ga      |     1 |             1.982168 |           2.340300 |              +0.358132 |
+| In      |     3 |             2.231800 |           2.398497 |              +0.166696 |
+| O       |     6 |             2.854694 |           2.691005 |              -0.163690 |
+
+The Ga neighbour moves strongly outward:
+
+```text
++0.358132 Å
+```
+
+while neighbouring oxygen atoms move inward toward the vacancy region.
+
+A structured second-shell response is also present, including an oxygen initially approximately 3.99 Å from the vacancy that moves by approximately 0.213 Å.
+
+Relaxation outside 6 Å:
+
+```text
+maximum displacement = 0.061460 Å
+mean displacement    = 0.006654 Å
+```
+
+---
+
+## 21.4 O004 structural reconstruction
+
+O004 has the local cation environment:
+
+```text
+Ga1Zn3
+```
+
+First-shell reconstruction:
+
+| Element | Count | Initial distance / Å | Final distance / Å | Mean radial change / Å |
+| ------- | ----: | -------------------: | -----------------: | ---------------------: |
+| Ga      |     1 |             2.007485 |           2.308928 |              +0.301442 |
+| Zn      |     3 |             2.026423 |           2.413767 |              +0.387344 |
+| O       |     3 |             2.779900 |           2.528435 |              -0.251464 |
+
+O004 exhibits the largest first-shell reconstruction among the four sites.
+
+The three Zn neighbours move strongly outward:
+
+```text
++0.387344 Å
+```
+
+while the nearby oxygen shell undergoes a substantial inward reconstruction:
+
+```text
+-0.251464 Å
+```
+
+The maximum first-shell atomic displacement is:
+
+```text
+0.389473 Å
+```
+
+Relaxation outside 6 Å:
+
+```text
+maximum displacement = 0.057760 Å
+mean displacement    = 0.007111 Å
+```
+
+---
+
+## 21.5 Four-site structural comparison
+
+| Site | Environment | Relative energy / eV | Maximum first-shell displacement / Å | Maximum displacement outside 6 Å / Å | Mean displacement outside 6 Å / Å |
+| ---- | ----------- | -------------------: | -----------------------------------: | -----------------------------------: | --------------------------------: |
+| O001 | Ga3Zn1      |            +0.969175 |                             0.223948 |                             0.018212 |                          0.004549 |
+| O002 | In3Zn1      |            +0.517282 |                             0.321838 |                             0.050448 |                          0.005712 |
+| O003 | In3Ga1      |            +0.110757 |                             0.358132 |                             0.061460 |                          0.006654 |
+| O004 | Ga1Zn3      |             0.000000 |                             0.389473 |                             0.057760 |                          0.007111 |
+
+The lower-energy O003 and O004 configurations exhibit larger first-shell reconstructions than O001.
+
+This suggests that the ability of the local environment to accommodate oxygen removal through cation and anion rearrangement may contribute to vacancy stabilisation.
+
+However, this is currently treated as a structural correlation rather than a demonstrated causal relationship.
+
+A quantitative separation of vacancy-creation energy and lattice-relaxation energy would require comparison with unrelaxed defect calculations.
+
+---
+
+## 21.6 Relaxation localisation
+
+All four 4×4×1 vacancy calculations show predominantly local structural reconstruction.
+
+Mean atomic displacements beyond 6 Å are:
+
+```text
+O001: 0.004549 Å
+O002: 0.005712 Å
+O003: 0.006654 Å
+O004: 0.007111 Å
+```
+
+All remain below approximately 0.008 Å.
+
+This supports the use of the 4×4×1 supercell for the present PBE neutral-vacancy screening workflow.
+
+The previously identified approximately 0.12 eV O001 3×3×1-to-4×4×1 matched-energy difference remains the primary explicit finite-size sensitivity benchmark.
+
+---
+
+## 21.7 Dataset outputs
+
+The consolidated dataset is stored under:
+
+```text
+results/crystalline/oxygen_vacancies/pbe/
+```
+
+Primary processed files:
+
+```text
+vacancy_tight_energies.csv
+vacancy_energy_summary.csv
+vacancy_first_shell_summary.csv
+vacancy_structural_summary.csv
+vacancy_localisation_summary.csv
+```
+
+Curated relaxed structures are stored under:
+
+```text
+results/crystalline/oxygen_vacancies/pbe/relaxed_structures/
+```
+
+for:
+
+```text
+O001
+O002
+O003
+O004
+```
+
+Generated comparison figures include:
+
+```text
+figures/vacancy_relative_energies.png
+figures/vacancy_first_shell_relaxation.png
+figures/vacancy_displacement_comparison.png
+```
+
+The dataset-level analysis is generated using:
+
+```text
+scripts/analysis/build_pbe_vacancy_dataset.py
+```
+
+**Decision:** the PBE neutral oxygen-vacancy screening dataset is complete.
+
+---
+
+# 22. PBE0-TC-LRC Pristine Validation
+
+The next major electronic-structure methodology is PBE0-TC-LRC.
+
+PBE0-TC-LRC parameters will not be transferred blindly from previous materials or calculations.
+
+The hybrid-functional workflow will first be validated on the 21-atom pristine canonical R3m crystalline reference.
 
 The planned sequence is:
 
@@ -679,15 +911,76 @@ PBE R3m reference
       ↓
 PBE0-TC-LRC pristine single-point validation
       ↓
+validate exact exchange / TC-LRC / ADMM / SCF behaviour
+      ↓
+analyse pristine hybrid electronic structure
+      ↓
 PBE0-TC-LRC R3m CELL_OPT
       ↓
 tight hybrid pristine reference
       ↓
-hybrid neutral-vacancy calculations
+construct hybrid-reference supercells
       ↓
-charged vacancies
-      ↓
-formation energies and CTLs
+hybrid oxygen-vacancy calculations
 ```
+
+Initial validation will examine:
+
+* SCF stability;
+* exact-exchange implementation;
+* truncated-Coulomb/LRC parameters;
+* auxiliary-density-matrix/ADMM strategy where appropriate;
+* basis compatibility;
+* k-point strategy;
+* band gap;
+* band-edge character;
+* structural response.
+
+The pristine hybrid single-point calculation will be performed before the PBE0-TC-LRC CELL_OPT.
+
+The PBE0-TC-LRC CELL_OPT will be performed only on the pristine 21-atom R3m reference.
+
+Large hybrid defect supercells will subsequently inherit the hybrid-optimised pristine lattice and undergo fixed-cell ionic relaxation.
+
+**Status:** CURRENT ACTIVE METHODOLOGICAL STAGE.
+
+---
+
+# 23. Future Hybrid Defect Workflow
+
+Once the pristine PBE0-TC-LRC methodology is validated, selected oxygen-vacancy structures will proceed through:
+
+```text
+PBE-relaxed vacancy
+        ↓
+PBE0-TC-LRC single point
+        ↓
+electronic localisation / spin analysis
+        ↓
+PBE0-TC-LRC fixed-cell GEO_OPT
+        ↓
+final electronic-structure analysis
+```
+
+The hybrid stage will assess:
+
+* vacancy energetic ordering;
+* structural changes relative to PBE;
+* defect-electron localisation;
+* spin state;
+* PDOS;
+* in-gap or resonant defect levels;
+* charge density;
+* spin density;
+* possible localisation metastability.
+
+Subsequent charged-defect calculations will establish:
+
+* physically relevant charge states;
+* finite-size electrostatic corrections;
+* potential alignment;
+* chemical-potential limits;
+* formation energies;
+* charge-transition levels.
 
 PBE0-TC-LRC parameters remain subject to explicit validation before production use.

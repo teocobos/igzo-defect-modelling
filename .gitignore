@@ -75,3 +75,6 @@ slurm-*.out
 # Crash dumps
 core
 core.*
+
+# CP2K geometry trajectories
+*-pos-*.xyz
