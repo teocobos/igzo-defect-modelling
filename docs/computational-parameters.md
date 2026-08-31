@@ -1,13 +1,10 @@
 # Computational Parameters
 
-This document records validated computational parameters used throughout
-the IGZO defect-modelling project.
+This document records validated computational parameters used throughout the IGZO defect-modelling project.
 
-Values marked `TBD` have not yet been established through convergence
-testing or methodological validation.
+Values marked `TBD` have not yet been established through convergence testing or methodological validation.
 
-Parameters should only be promoted to production use once the relevant
-validation has been completed.
+Parameters should only be promoted to production use once the relevant validation has been completed.
 
 ---
 
@@ -15,326 +12,461 @@ validation has been completed.
 
 ## General
 
-| Parameter | Current value |
-|---|---|
-| Local CP2K version | 2026.2 |
-| ARCHER2 production version | 2025.2 |
-| Method | Quickstep / DFT |
-| Representation | GPW |
-| XC functional | PBE |
-| Dispersion correction | None for the current crystalline reference workflow |
-| Primary production platform | ARCHER2 |
+| Parameter                   | Current value                         |
+| --------------------------- | ------------------------------------- |
+| Local CP2K version          | 2026.2                                |
+| ARCHER2 production version  | 2025.2                                |
+| Method                      | Quickstep / DFT                       |
+| Representation              | GPW                                   |
+| Current PBE functional      | PBE                                   |
+| Hybrid functional           | PBE0-TC-LRC — validation pending      |
+| Dispersion correction       | None for current crystalline workflow |
+| Primary production platform | ARCHER2                               |
 
-The local CP2K 2026.2 environment was used for initial smoke tests and
-numerical convergence studies. Production ordered-structure geometry
-optimisations and final tight single-point calculations were completed on
-ARCHER2 using CP2K 2025.2.
+Local CP2K 2026.2 is used for workflow development and selected numerical testing.
+
+Production crystalline calculations are performed on ARCHER2 using CP2K 2025.2.
 
 ---
 
 ## Basis Sets
 
-Current crystalline production basis:
+Validated PBE crystalline basis:
 
-| Element | Basis set |
-|---|---|
-| In | `TZV2P-MOLOPT-PBE-GTH-q13` |
-| Ga | `TZV2P-MOLOPT-PBE-GTH-q13` |
-| Zn | `TZV2P-MOLOPT-PBE-GTH-q12` |
-| O | `TZV2P-MOLOPT-PBE-GTH-q6` |
+| Element | Basis set                  |
+| ------- | -------------------------- |
+| In      | `TZV2P-MOLOPT-PBE-GTH-q13` |
+| Ga      | `TZV2P-MOLOPT-PBE-GTH-q13` |
+| Zn      | `TZV2P-MOLOPT-PBE-GTH-q12` |
+| O       | `TZV2P-MOLOPT-PBE-GTH-q6`  |
 
-Data-file families used:
+Data-file families:
 
-- local CP2K 2026.2: `BASIS_MOLOPT_UZH_2026.2`
-- ARCHER2 CP2K 2025.2: `BASIS_MOLOPT_UZH`
+```text
+Local CP2K 2026.2:
+BASIS_MOLOPT_UZH_2026.2
+
+ARCHER2 CP2K 2025.2:
+BASIS_MOLOPT_UZH
+```
 
 Basis-set sensitivity was tested using DZVP, TZVP and TZV2P.
 
-Preliminary energy differences relative to TZV2P at the test grid were:
+| Basis | ΔE vs TZV2P / meV/f.u. |
+| ----- | ---------------------: |
+| DZVP  |                253.314 |
+| TZVP  |                 70.201 |
+| TZV2P |                  0.000 |
 
-| Basis | ΔE vs TZV2P (meV/f.u.) |
-|---|---:|
-| DZVP | 253.314 |
-| TZVP | 70.201 |
-| TZV2P | 0.000 |
+**Status:** TZV2P selected for the PBE crystalline workflow.
 
-**Status:** TZV2P selected as the crystalline reference basis.
+Hybrid-specific basis suitability will be checked during PBE0-TC-LRC validation.
 
 ---
 
 ## Pseudopotentials
 
-Current crystalline production pseudopotentials:
+Validated PBE pseudopotentials:
 
 | Element | Pseudopotential |
-|---|---|
-| In | `GTH-PBE-q13` |
-| Ga | `GTH-PBE-q13` |
-| Zn | `GTH-PBE-q12` |
-| O | `GTH-PBE-q6` |
+| ------- | --------------- |
+| In      | `GTH-PBE-q13`   |
+| Ga      | `GTH-PBE-q13`   |
+| Zn      | `GTH-PBE-q12`   |
+| O       | `GTH-PBE-q6`    |
 
-Data-file families used:
+Data-file families:
 
-- local CP2K 2026.2: `POTENTIAL_UZH_2026.2`
-- ARCHER2 CP2K 2025.2: `POTENTIAL_UZH`
+```text
+Local CP2K 2026.2:
+POTENTIAL_UZH_2026.2
 
-The basis and pseudopotential valence definitions are matched element by
-element.
+ARCHER2 CP2K 2025.2:
+POTENTIAL_UZH
+```
 
-**Status:** validated for the current PBE crystalline workflow.
+**Status:** validated for PBE crystalline calculations.
 
 ---
 
 ## Grid
 
-| Parameter | Production value |
-|---|---:|
-| CUTOFF | 700 Ry |
-| REL_CUTOFF | 60 Ry |
-| NGRIDS | 4 |
+| Parameter  | Production value |
+| ---------- | ---------------: |
+| CUTOFF     |           700 Ry |
+| REL_CUTOFF |            60 Ry |
+| NGRIDS     |                4 |
 
-Validation summary:
+Validation:
 
-- 600 → 700 Ry changed the energy by approximately 0.65 meV/f.u.
-  in the cutoff series.
-- REL_CUTOFF = 60 Ry was numerically stable, with the 50 → 60 Ry
-  change approximately 0.024 meV/f.u.
+* 600 → 700 Ry changed the energy by approximately 0.65 meV/f.u.;
+* 50 → 60 Ry REL_CUTOFF changed the energy by approximately 0.024 meV/f.u.
 
-**Status:** validated for the current crystalline ordering study.
+**Status:** validated.
 
----
+Production inputs explicitly contain:
 
-## SCF
+```text
+&MGRID
+  CUTOFF 700
+  REL_CUTOFF 60
+&END MGRID
 
-### Geometry optimisation
+&QS
+  METHOD GPW
+  EPS_PGF_ORB 1.0E-18
+  EPS_FILTER_MATRIX 0.0
+&END QS
 
-| Parameter | Production value |
-|---|---|
-| EPS_SCF | `1.0E-6` |
-| MAX_SCF | 200 |
-| SCF method | diagonalisation with `BROYDEN_MIXING` |
-| ALPHA | 0.10 |
-| BETA | 1.5 |
-| NBUFFER | 4 |
-| Smearing | Fermi–Dirac |
-| Electronic temperature | 300 K |
-| ADDED_MOS | 40 |
-| Diagonalisation | `ALGORITHM STANDARD` |
-| Preferred diagonalisation library | ScaLAPACK |
+&POISSON
+  PERIODIC XYZ
+&END POISSON
+```
 
-### Final single-point energies
-
-| Parameter | Production value |
-|---|---|
-| EPS_SCF | `1.0E-7` |
-| MAX_SCF | 200 |
-| k-point sampling | same as production crystalline mesh |
-
-A local benchmark showed that standard Pulay mixing could converge a
-fixed-geometry 6×6×1 calculation faster than the original Broyden
-baseline. However, Pulay-related runtime/conditioning failures were
-encountered during local geometry-optimisation development under WSL.
-The completed ARCHER2 production geometry optimisations therefore used
-the robust Broyden setup above.
-
-`IGNORE_CONVERGENCE_FAILURE` is not used for production geometry
-optimisation.
+These blocks must not be omitted from production calculations.
 
 ---
 
-## Brillouin-Zone Sampling
+## Primitive-Cell SCF
 
-| System | k-point sampling |
-|---|---|
-| 21-atom crystalline ordered IGZO | 6×6×1 Monkhorst–Pack |
-| Crystalline defect supercells | TBD; must be reconverged for supercell size |
-| Amorphous IGZO | expected to approach Γ-only for sufficiently large cells, but validation is TBD |
+Geometry optimisation:
 
-The 5×5×1 → 6×6×1 energy change was approximately 4.5 meV/f.u.
+| Parameter              | Value                |
+| ---------------------- | -------------------- |
+| EPS_SCF                | `1.0E-6`             |
+| MAX_SCF                | 200                  |
+| Solver                 | diagonalisation      |
+| Mixing                 | `BROYDEN_MIXING`     |
+| ALPHA                  | 0.10                 |
+| BETA                   | 1.5                  |
+| NBUFFER                | 4                    |
+| Smearing               | Fermi–Dirac          |
+| Electronic temperature | 300 K                |
+| ADDED_MOS              | 40                   |
+| Diagonalisation        | `ALGORITHM STANDARD` |
+| Preferred library      | ScaLAPACK            |
 
-**Status:** 6×6×1 selected for the current 21-atom crystalline reference cell.
+Final tight energies:
 
----
+```text
+EPS_SCF = 1.0E-7
+```
 
-## Geometry Optimisation
-
-Current ordered-structure production workflow:
-
-| Parameter | Value |
-|---|---|
-| RUN_TYPE | `GEO_OPT` |
-| Optimiser | BFGS |
-| Cell treatment | fixed experimental cell |
-| MAX_FORCE | CP2K default |
-| RMS_FORCE | CP2K default |
-| MAX_DR | CP2K default |
-| RMS_DR | CP2K default |
-| EPS_SCF | `1.0E-6` |
-
-All four ordered crystalline candidates converged successfully on
-ARCHER2.
-
-A final `RUN_TYPE ENERGY` calculation with `EPS_SCF = 1.0E-7` was
-performed on each relaxed structure before energetic ranking.
+`IGNORE_CONVERGENCE_FAILURE` is not used for production geometry optimisation.
 
 ---
 
-## Final crystalline reference optimisation
+## Primitive-Cell Brillouin-Zone Sampling
 
-The primary crystalline IGZO reference is the ordered `ordered_003`
-configuration derived from COD 1521670.
+| System                       | Sampling             |
+| ---------------------------- | -------------------- |
+| 21-atom crystalline R3m IGZO | 6×6×1 Monkhorst-Pack |
 
-The final crystalline structure was obtained using CP2K with:
+The 5×5×1 → 6×6×1 change was approximately 4.5 meV/f.u.
 
-- Method: Quickstep / GPW
-- Exchange-correlation functional: PBE
-- Basis set:
-  - In: `TZV2P-MOLOPT-PBE-GTH-q13`
-  - Ga: `TZV2P-MOLOPT-PBE-GTH-q13`
-  - Zn: `TZV2P-MOLOPT-PBE-GTH-q12`
-  - O: `TZV2P-MOLOPT-PBE-GTH-q6`
-- Pseudopotentials: matching GTH-PBE potentials
-- Plane-wave cutoff: 700 Ry
-- Relative cutoff: 60 Ry
-- k-point mesh: 6 × 6 × 1
-- SCF mixing: Broyden
-- Electronic temperature: 300 K Fermi-Dirac smearing
-- Added molecular orbitals: 40
-- Geometry/cell optimiser: BFGS
-- Final tight single-point SCF threshold: `EPS_SCF = 1.0E-7`
+**Status:** validated for the 21-atom PBE crystalline reference.
 
-### Symmetry-constrained cell optimisation
+---
 
-A final CELL_OPT calculation was performed for `ordered_003` while
-preserving the R3m space group using `KEEP_SPACE_GROUP TRUE`.
+## Final PBE Crystalline Reference
 
-The converged lattice parameters were:
+Canonical reference:
 
-- a = b = 3.3715680721 Å
-- c = 26.1742696350 Å
-- alpha = beta = 90°
-- gamma = 60°
-- volume = 257.673091903 Å³
+```text
+igzo_crystal_ordered_003_r3m_cell_relaxed
+```
 
-The 60° gamma convention is the CP2K hexagonal representation of the
-rhombohedral/hexagonal lattice.
+Validated methodology:
 
-The final internal pressure was:
+* PBE;
+* TZV2P-MOLOPT-PBE-GTH;
+* matching GTH-PBE potentials;
+* 700 Ry CUTOFF;
+* 60 Ry REL_CUTOFF;
+* 6×6×1 k-points;
+* Broyden mixing;
+* 300 K Fermi–Dirac smearing;
+* ADDED_MOS = 40;
+* BFGS;
+* R3m-preserving CELL_OPT;
+* final EPS_SCF = 1e-7.
 
-- -69.7746 bar
+Final R3m lattice:
 
-which satisfied the specified pressure tolerance of 100 bar.
+```text
+a = b = 3.3715680721 Å
+c = 26.1742696350 Å
+alpha = beta = 90°
+```
 
-### Final reference energy
+Equivalent CP2K hexagonal representation:
 
-The final tight single-point energy of the R3m-constrained structure was:
+```text
+gamma = 60°
+```
 
-- `E(R3m) = -767.259392342909337 Ha`
+Final volume:
 
-The corresponding unconstrained cell-relaxed structure had:
+```text
+257.673091903 Å^3
+```
 
-- `E(P1) = -767.259393316824116 Ha`
+Final pressure:
 
-The difference is approximately:
+```text
+-69.7746 bar
+```
 
-- 0.0265 meV per 21-atom cell
-- 0.0088 meV per formula unit
+Final tight energy:
 
-The two structures are therefore effectively energetically degenerate
-at the precision relevant to the present workflow.
+```text
+E(R3m) = -767.259392342909337 Ha
+```
+
+---
+
+# PBE Neutral Oxygen-Vacancy Workflow
+
+## Production Supercell
+
+Selected production supercell:
+
+```text
+4×4×1
+```
+
+Composition:
+
+```text
+Pristine: 336 atoms
+V_O^0:    335 atoms
+```
+
+Exact CP2K production cell:
+
+```text
+&CELL
+  A 13.486272280000 0.000000000000 0.000000000000
+  B -6.743136140000 11.679454396834 0.000000000000
+  C 0.000000000000 0.000000000000 26.174269630000
+  PERIODIC XYZ
+&END CELL
+```
+
+This is the 120° representation used by the validated O001 production calculation.
+
+The pristine supercell is generated by exact replication of the optimised primitive reference.
+
+No separate CELL_OPT is performed on the replicated pristine supercell.
+
+---
+
+## Production Vacancy Sampling
+
+Production PBE neutral vacancies use:
+
+```text
+Γ-only
+```
+
+For the OT workflow, Γ-only is represented by omission of an explicit `&KPOINTS` section.
+
+The production decision is based on explicit O001 validation against:
+
+* 3×3×1 + 2×2×1 + diagonalisation;
+* 3×3×1 + Γ + diagonalisation;
+* 3×3×1 + Γ + OT;
+* 4×4×1 + Γ + OT.
+
+The Γ-point OT and diagonalisation calculations reproduce essentially identical O001 energies and local reconstructions.
+
+---
+
+## Production Vacancy SCF
+
+```text
+&SCF
+  EPS_SCF 1.0E-6
+  MAX_SCF 150
+  SCF_GUESS ATOMIC
+
+  &OT
+    MINIMIZER DIIS
+    PRECONDITIONER FULL_SINGLE_INVERSE
+  &END OT
+
+  &OUTER_SCF
+    MAX_SCF 20
+    EPS_SCF 1.0E-6
+  &END OUTER_SCF
+&END SCF
+```
+
+No diagonalisation mixing block, smearing or ADDED_MOS is used in the Γ+OT production workflow.
+
+---
+
+## Production Vacancy Geometry Optimisation
+
+| Parameter            | Value                    |
+| -------------------- | ------------------------ |
+| RUN_TYPE             | `GEO_OPT`                |
+| Optimiser            | BFGS                     |
+| Cell treatment       | fixed pristine supercell |
+| EPS_SCF              | `1.0E-6`                 |
+| Charge               | 0                        |
+| Initial multiplicity | 1                        |
+
+The supercell lattice remains fixed during defect relaxation.
+
+The defective supercell is not CELL_OPTed.
+
+---
+
+## O001 Solver Validation
+
+3×3×1 Γ calculations:
+
+```text
+Γ + diagonalisation:
+E = -6889.147763739658330 Ha
+
+Γ + OT tight:
+E = -6889.147760105754969 Ha
+```
+
+Difference:
+
+```text
+~9.9E-5 eV per defect cell
+```
+
+The first-shell reconstructions are also essentially identical.
+
+This validates OT as an efficient Γ-point solver for the current large-cell PBE screening workflow.
+
+---
+
+## O001 Supercell-Size Sensitivity
+
+Matched Γ+OT differences:
+
+```text
+ΔE(3×3×1) = 16.076899548553229 Ha
+ΔE(4×4×1) = 16.081291151052937 Ha
+```
+
+Difference:
+
+```text
+~0.1195 eV
+```
+
+This residual finite-size sensitivity should be retained as part of the uncertainty/validation context for neutral-vacancy screening.
+
+---
+
+# PBE0-TC-LRC
+
+## Status
+
+```text
+VALIDATION PENDING
+```
+
+PBE0-TC-LRC will be validated before production hybrid defect calculations.
+
+The intended sequence is:
+
+```text
+PBE R3m geometry
+      ↓
+PBE0-TC-LRC pristine single point
+      ↓
+PBE0-TC-LRC R3m CELL_OPT
+      ↓
+tight hybrid pristine reference
+      ↓
+hybrid defect calculations
+```
+
+Hybrid parameters must not be copied blindly from previous oxide projects.
+
+Parameters requiring explicit validation include:
+
+| Parameter                     | Status       |
+| ----------------------------- | ------------ |
+| Exact-exchange fraction       | TBD/validate |
+| TC/LRC treatment              | TBD/validate |
+| Interaction/truncation radius | TBD/validate |
+| Auxiliary basis/ADMM strategy | TBD/validate |
+| SCF solver                    | TBD/validate |
+| k-point treatment             | TBD/validate |
+| EPS_SCF                       | TBD/validate |
+| Hybrid CELL_OPT settings      | TBD/validate |
+| Band gap                      | validate     |
+| Band-edge character           | validate     |
+| Structural parameters         | validate     |
+
+The final hybrid pristine lattice will be replicated to construct hybrid defect supercells.
+
+Hybrid defect supercells will be relaxed at fixed cell.
 
 ---
 
 # CP2K AIMD
 
-| Parameter | Value |
-|---|---|
-| Ensemble | TBD |
-| Timestep | TBD |
-| Thermostat | TBD |
-| Barostat | TBD |
-| Initial temperature | TBD |
-| Melt temperature | TBD |
-| Melt duration | TBD |
-| Quench rate | TBD |
-| Final temperature | TBD |
-| Final equilibration | TBD |
-| Initial amorphous-cell size/shape | TBD |
-| Target density | TBD |
-
-These parameters must be validated before production amorphisation.
+| Parameter                         | Value |
+| --------------------------------- | ----- |
+| Ensemble                          | TBD   |
+| Timestep                          | TBD   |
+| Thermostat                        | TBD   |
+| Barostat                          | TBD   |
+| Initial temperature               | TBD   |
+| Melt temperature                  | TBD   |
+| Melt duration                     | TBD   |
+| Quench rate                       | TBD   |
+| Final temperature                 | TBD   |
+| Final equilibration               | TBD   |
+| Initial amorphous-cell size/shape | TBD   |
+| Target density                    | TBD   |
 
 ---
 
 # VASP
 
 VASP remains a complementary crystalline/electronic-structure workflow.
-No VASP production parameters have yet been validated for this project.
 
-| Parameter | Value |
-|---|---|
-| VASP version | TBD |
-| XC functional | TBD |
-| PAW datasets | TBD |
-| ENCUT | TBD |
-| PREC | TBD |
-| EDIFF | TBD |
-| ISMEAR | TBD |
-| SIGMA | TBD |
-| Spin treatment | TBD |
-| EDIFFG | TBD |
-| IBRION | TBD |
-| ISIF | TBD |
-| NSW | TBD |
-| k-points | TBD |
+No VASP production parameters have yet been validated.
 
 ---
 
 # MACE
 
-| Parameter | Value |
-|---|---|
-| MACE version | TBD |
-| Dataset version | TBD |
-| Model architecture | TBD |
-| Interaction cutoff | TBD |
-| Number of layers | TBD |
-| Energy weight | TBD |
-| Force weight | TBD |
-| Stress weight | TBD |
-| Optimiser | TBD |
-| Learning rate | TBD |
-| Random seed | TBD |
+Model and dataset parameters remain TBD pending first-principles dataset generation.
 
 ---
 
 # LAMMPS
 
-| Parameter | Value |
-|---|---|
-| LAMMPS version | TBD |
-| MACE model | TBD |
-| Timestep | TBD |
-| Ensemble | TBD |
-| Thermostat | TBD |
-| Barostat | TBD |
-| Production duration | TBD |
-| Sampling interval | TBD |
+LAMMPS production parameters remain TBD pending MACE validation.
 
 ---
 
 # Parameter Approval
 
-Parameters should progress through:
+Parameters progress through:
 
-    proposed
-       ↓
-    convergence testing
-       ↓
-    validation
-       ↓
-    production
+```text
+proposed
+   ↓
+convergence testing
+   ↓
+validation
+   ↓
+production
+```
 
-Current validated crystalline CP2K production parameters are traceable
-to the convergence and ordered-structure calculations recorded in
-`docs/results-log.md`.
+The PBE crystalline reference and 4×4×1 Γ+OT neutral-vacancy screening workflow have reached production status.
+
+PBE0-TC-LRC remains in the validation stage.

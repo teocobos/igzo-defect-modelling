@@ -1,0 +1,43 @@
+IGZO oxygen-vacancy relaxation analysis
+============================================================
+
+Label: O001_4x4x1_gamma_ot
+Pristine atoms: 336
+Defect atoms: 335
+
+Missing oxygen pristine index: 170
+Vacancy fractional coordinates:
+  0.0833333283 0.5833333274 0.4536476534
+
+Vacancy Cartesian coordinates / Å:
+  5.0573520000 6.8130150000 11.8738960000
+
+Largest atomic displacement:
+  atom index (0-based): 142
+  element: Ga
+  displacement: 0.223948 Å
+  initial distance from vacancy: 1.946710 Å
+
+Atoms within 3.00 Å of the vacancy:
+  Ga index= 142 r_initial=1.946710 Å r_final=2.170446 Å delta_r=+0.223736 Å (away) disp=0.223948 Å
+  Ga index= 138 r_initial=1.946710 Å r_final=2.170409 Å delta_r=+0.223699 Å (away) disp=0.223911 Å
+  Ga index= 137 r_initial=1.946710 Å r_final=2.170388 Å delta_r=+0.223678 Å (away) disp=0.223890 Å
+  Zn index=  26 r_initial=2.547845 Å r_final=2.612312 Å delta_r=+0.064467 Å (away) disp=0.064467 Å
+  O  index= 329 r_initial=2.779899 Å r_final=2.617071 Å delta_r=-0.162828 Å (toward) disp=0.165390 Å
+  O  index= 333 r_initial=2.779899 Å r_final=2.617047 Å delta_r=-0.162852 Å (toward) disp=0.165429 Å
+  O  index= 328 r_initial=2.779899 Å r_final=2.616979 Å delta_r=-0.162920 Å (toward) disp=0.165480 Å
+  O  index= 281 r_initial=2.794522 Å r_final=2.644930 Å delta_r=-0.149592 Å (toward) disp=0.149602 Å
+  O  index= 285 r_initial=2.794522 Å r_final=2.644890 Å delta_r=-0.149632 Å (toward) disp=0.149641 Å
+  O  index= 280 r_initial=2.794522 Å r_final=2.644825 Å delta_r=-0.149697 Å (toward) disp=0.149708 Å
+
+First-shell reconstruction by element:
+  Ga: N=3, <r_initial>=1.946710 Å, <r_final>=2.170414 Å, <delta_r>=+0.223704 Å (away from vacancy), <disp>=0.223916 Å, max_disp=0.223948 Å
+  O : N=6, <r_initial>=2.787210 Å, <r_final>=2.630957 Å, <delta_r>=-0.156253 Å (toward vacancy), <disp>=0.157541 Å, max_disp=0.165480 Å
+  Zn: N=1, <r_initial>=2.547845 Å, <r_final>=2.612312 Å, <delta_r>=+0.064467 Å (away from vacancy), <disp>=0.064467 Å, max_disp=0.064467 Å
+
+Relaxation localisation:
+  outside 3.0 Å: max=0.071325 Å, mean=0.008809 Å
+  outside 4.0 Å: max=0.055094 Å, mean=0.007425 Å
+  outside 5.0 Å: max=0.055094 Å, mean=0.006770 Å
+  outside 6.0 Å: max=0.018212 Å, mean=0.004533 Å
+  outside 7.0 Å: max=0.018212 Å, mean=0.004268 Å
